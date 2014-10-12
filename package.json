@@ -1,0 +1,18 @@
+{
+  "name": "purescript-smolder",
+  "version": "1.0.0",
+  "description": "A combinator library for generating markup",
+  "scripts": {
+    "install": "pulp install",
+    "postinstall": "node htmlgen.js",
+    "prepublish": "pulp build"
+  },
+  "author": "Bodil Stokke <bodil@bodil.org>",
+  "license": "LGPL-3.0+",
+  "devDependencies": {
+    "pulp": "^1.1.4"
+  },
+  "dependencies": {
+    "vtree": "0.0.21"
+  }
+}
