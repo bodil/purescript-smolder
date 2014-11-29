@@ -16,6 +16,6 @@
   ],
   "dependencies": {
     "purescript-monoid": "~0.1.4",
-    "purescript-maps": "~0.0.5"
+    "purescript-maps": "~0.1.3"
   }
 }
