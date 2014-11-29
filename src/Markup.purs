@@ -31,13 +31,16 @@ text s = Content s
 foreign import slightlyUnsafeCoerce
   "function slightlyUnsafeCoerce(a) {return a;}" :: forall a b. a -> b
 
-foreign import horriblyUnsafeBind """
-  function horriblyUnsafeBind(ma) {
-    return function(f) {
-      return new Append(ma, f());
+foreign import horriblyUnsafeBindP """
+  function horriblyUnsafeBindP(Append) {
+    return function(ma) {
+      return function(f) {
+        return Append(ma)(f(function() {}));
+      }
     }
   }
-""" :: forall a b. MarkupM a -> (a -> MarkupM b) -> MarkupM b
+""" :: forall a b. (MarkupM a -> MarkupM a -> MarkupM a) -> MarkupM a -> (a -> MarkupM b) -> MarkupM b
+horriblyUnsafeBind = horriblyUnsafeBindP Append
 
 
 
