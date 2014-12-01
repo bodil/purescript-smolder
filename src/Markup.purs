@@ -1,92 +1,88 @@
 module Text.Smolder.Markup
   ( MarkupM(..)
-  , Markup(..)
-  , Attribute(..)
-  , Attributable
+  , Markup()
+  , Attr(..)
+  , parent
+  , leaf
   , text
+  , Attribute()
+  , Attributable
   , attribute
   , (!)
   , (!?)
   ) where
 
+import Data.Maybe
 import Data.Monoid
 
+import Control.Apply ((*>))
 
+data Attr = Attr String String
 
 data MarkupM a
-  = Parent String (MarkupM a)
-  | Leaf String
-  | Content String
-  | Append (MarkupM a) (MarkupM a)
-  | AddAttribute String String (MarkupM a)
-  | Empty
+  = Element String (Maybe Markup) [Attr] (MarkupM a)
+  | Content String (MarkupM a)
+  | Return a 
 
 type Markup = MarkupM Unit
 
-text :: forall a. String -> MarkupM a
-text s = Content s
+parent :: String -> Markup -> Markup
+parent el kids = Element el (Just kids) [] (Return unit)
 
+leaf :: String -> Markup
+leaf el = Element el Nothing [] (Return unit)
 
-
-foreign import slightlyUnsafeCoerce
-  "function slightlyUnsafeCoerce(a) {return a;}" :: forall a b. a -> b
-
-foreign import horriblyUnsafeBindP """
-  function horriblyUnsafeBindP(Append) {
-    return function(ma) {
-      return function(f) {
-        return Append(ma)(f(function() {}));
-      }
-    }
-  }
-""" :: forall a b. (MarkupM a -> MarkupM a -> MarkupM a) -> MarkupM a -> (a -> MarkupM b) -> MarkupM b
-horriblyUnsafeBind = horriblyUnsafeBindP Append
-
-
+text :: forall a. String -> Markup
+text s = Content s (Return unit)
 
 instance semigroupMarkupM :: Semigroup (MarkupM a) where
-  (<>) = Append
+  (<>) x y = x *> y
 
-instance monoidMarkupM :: Monoid (MarkupM a) where
-  mempty = Empty
+instance monoidMarkup :: Monoid (MarkupM Unit) where
+  mempty = Return unit
 
 instance functorMarkupM :: Functor MarkupM where
-  (<$>) _ = slightlyUnsafeCoerce
+  (<$>) f (Element el kids attrs rest) = Element el kids attrs (f <$> rest)
+  (<$>) f (Content s rest) = Content s (f <$> rest)
+  (<$>) f (Return a) = Return (f a)
 
 instance applyMarkupM :: Apply MarkupM where
   (<*>) = ap
 
 instance applicativeMarkupM :: Applicative MarkupM where
-  pure _ = Empty
+  pure = Return
 
 instance bindMarkupM :: Bind MarkupM where
-  (>>=) = horriblyUnsafeBind
+  (>>=) (Element el kids attrs rest) f = Element el kids attrs (rest >>= f)
+  (>>=) (Content s rest) f = Content s (rest >>= f)
+  (>>=) (Return a) f = f a
 
 instance monadMarkupM :: Monad MarkupM
 
 
 
-newtype Attribute = Attribute (forall a. MarkupM a -> MarkupM a)
+data Attribute = Attribute [Attr]
 
 instance semigroupAttribute :: Semigroup Attribute where
-  (<>) (Attribute f) (Attribute g) = Attribute (f >>> g)
+  (<>) (Attribute xs) (Attribute ys) = Attribute (xs <> ys)
 
 instance monoidAttribute :: Monoid Attribute where
-  mempty = Attribute id
+  mempty = Attribute mempty
 
 attribute :: String -> String -> Attribute
-attribute key value = Attribute (AddAttribute key value)
+attribute key value = Attribute [Attr key value]
 
 infixl 4 !
 class Attributable a where
   (!) :: a -> Attribute -> a
 
-instance attributableMarkupM :: Attributable (MarkupM a) where
-  (!) h (Attribute f) = f h
+instance attributableMarkupM :: Attributable (MarkupM Unit) where
+  (!) (Element el kids attrs rest) (Attribute xs) = Element el kids (attrs <> xs) rest
 
-instance attributableMarkupMF :: Attributable (MarkupM a -> MarkupM b) where
-  (!) h (Attribute f) = f <<< h
+instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit) where
+  (!) k xs m = k m ! xs
 
 infixl 4 !?
+
 (!?) :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
 (!?) h c a = if c then h ! a else h

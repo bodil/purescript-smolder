@@ -27,7 +27,7 @@ html.write("module Text.Smolder.HTML where\n\nimport Prelude ()\nimport Text.Smo
   "th", "thead", "time", "title", "tr", "ul", "var", "video"
 ].forEach(function(el) {
   html.write(sanitise(el) + " :: Markup -> Markup\n" + sanitise(el) +
-            " = Parent \"" + el + "\"\n");
+            " = parent \"" + el + "\"\n");
 });
 
 [
@@ -35,7 +35,7 @@ html.write("module Text.Smolder.HTML where\n\nimport Prelude ()\nimport Text.Smo
   "menuitem", "meta", "param", "source", "track", "wbr"
 ].forEach(function(el) {
   html.write(sanitise(el) + " :: Markup\n" + sanitise(el) +
-            " = Leaf \"" + el + "\"\n");
+            " = leaf \"" + el + "\"\n");
 });
 
 var attrs = fs.createWriteStream("src/HTML/Attributes.purs");

@@ -6,9 +6,9 @@ module Text.Smolder.Renderer.VTree
 
 import Data.Function
 import qualified Data.Map as Map
+import qualified Text.Smolder.Markup as Markup
 import Data.Maybe
 import Data.Tuple
-import Text.Smolder.Markup
 import Text.Smolder.Renderer.Util (Node(..), renderMarkup)
 
 import Text.Smolder.HTML
@@ -52,7 +52,7 @@ foreign import convertAttrsP """
 convertAttrs :: Map.Map String String -> VAttrs
 convertAttrs = (runFn2 convertAttrsP) Map.toList
 
-render' :: Markup -> [VNode]
+render' :: forall a. Markup.MarkupM a -> [VNode]
 render' m = renderNode <$> renderMarkup m
   where renderNode (Element n a c) = vnode n (convertAttrs a) (renderNode <$> c)
         renderNode (Text t) = vtext t
@@ -62,5 +62,5 @@ render' m = renderNode <$> renderMarkup m
 -- will throw a runtime error if you pass it a Markup value
 -- expressing anything but a single node, returning the
 -- single rendered node otherwise.
-render :: Markup -> VNode
+render :: forall a. Markup.MarkupM a -> VNode
 render m = case render' m of (x:[]) -> x
