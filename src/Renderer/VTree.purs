@@ -39,10 +39,14 @@ foreign import vtext """
 """ :: String -> VNode
 
 foreign import convertAttrsP """
+  function rewriteAttr(a) {
+    return (a === "class") ? "className" : a;
+  }
+
   function convertAttrsP(toList, attrs) {
     var out = {};
     toList(attrs).forEach(function(t) {
-      out[t.value0] = t.value1;
+      out[rewriteAttr(t.value0)] = t.value1;
     });
     return out;
   }
