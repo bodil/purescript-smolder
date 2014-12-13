@@ -4,9 +4,10 @@ module Text.Smolder.Renderer.String
   ) where
 
 import qualified Data.Map as Map
+import qualified Text.Smolder.Markup as Markup
+
 import Data.Maybe
 import Data.String
-import Text.Smolder.Markup
 import Text.Smolder.Renderer.Util
 
 -- TODO: attr values and text content must be properly escaped.
@@ -20,11 +21,11 @@ renderNode (Element n a c) = "<" ++ n ++ showAttrs a ++ showTail c
                   Nothing -> ""
 renderNode (Text s) = s
 
-render :: Markup -> String
+render :: forall a. Markup.MarkupM a -> String
 render m = joinWith "" $ renderNode <$> renderMarkup m
 
 instance showNode :: Show Node where
   show = renderNode
 
-instance showMarkup :: Show (MarkupM Unit) where
+instance showMarkup :: Show (Markup.MarkupM Unit) where
   show = render

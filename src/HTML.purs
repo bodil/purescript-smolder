@@ -6,214 +6,214 @@ import Text.Smolder.Markup
 type Html = Markup
 
 a :: Markup -> Markup
-a = Parent "a"
+a = parent "a"
 abbr :: Markup -> Markup
-abbr = Parent "abbr"
+abbr = parent "abbr"
 address :: Markup -> Markup
-address = Parent "address"
+address = parent "address"
 article :: Markup -> Markup
-article = Parent "article"
+article = parent "article"
 aside :: Markup -> Markup
-aside = Parent "aside"
+aside = parent "aside"
 audio :: Markup -> Markup
-audio = Parent "audio"
+audio = parent "audio"
 b :: Markup -> Markup
-b = Parent "b"
+b = parent "b"
 bdo :: Markup -> Markup
-bdo = Parent "bdo"
+bdo = parent "bdo"
 blockquote :: Markup -> Markup
-blockquote = Parent "blockquote"
+blockquote = parent "blockquote"
 body :: Markup -> Markup
-body = Parent "body"
+body = parent "body"
 button :: Markup -> Markup
-button = Parent "button"
+button = parent "button"
 canvas :: Markup -> Markup
-canvas = Parent "canvas"
+canvas = parent "canvas"
 caption :: Markup -> Markup
-caption = Parent "caption"
+caption = parent "caption"
 cite :: Markup -> Markup
-cite = Parent "cite"
+cite = parent "cite"
 code :: Markup -> Markup
-code = Parent "code"
+code = parent "code"
 colgroup :: Markup -> Markup
-colgroup = Parent "colgroup"
+colgroup = parent "colgroup"
 command :: Markup -> Markup
-command = Parent "command"
+command = parent "command"
 datalist :: Markup -> Markup
-datalist = Parent "datalist"
+datalist = parent "datalist"
 dd :: Markup -> Markup
-dd = Parent "dd"
+dd = parent "dd"
 del :: Markup -> Markup
-del = Parent "del"
+del = parent "del"
 details :: Markup -> Markup
-details = Parent "details"
+details = parent "details"
 dfn :: Markup -> Markup
-dfn = Parent "dfn"
+dfn = parent "dfn"
 div :: Markup -> Markup
-div = Parent "div"
+div = parent "div"
 dl :: Markup -> Markup
-dl = Parent "dl"
+dl = parent "dl"
 dt :: Markup -> Markup
-dt = Parent "dt"
+dt = parent "dt"
 em :: Markup -> Markup
-em = Parent "em"
+em = parent "em"
 fieldset :: Markup -> Markup
-fieldset = Parent "fieldset"
+fieldset = parent "fieldset"
 figcaption :: Markup -> Markup
-figcaption = Parent "figcaption"
+figcaption = parent "figcaption"
 figure :: Markup -> Markup
-figure = Parent "figure"
+figure = parent "figure"
 footer :: Markup -> Markup
-footer = Parent "footer"
+footer = parent "footer"
 form :: Markup -> Markup
-form = Parent "form"
+form = parent "form"
 h1 :: Markup -> Markup
-h1 = Parent "h1"
+h1 = parent "h1"
 h2 :: Markup -> Markup
-h2 = Parent "h2"
+h2 = parent "h2"
 h3 :: Markup -> Markup
-h3 = Parent "h3"
+h3 = parent "h3"
 h4 :: Markup -> Markup
-h4 = Parent "h4"
+h4 = parent "h4"
 h5 :: Markup -> Markup
-h5 = Parent "h5"
+h5 = parent "h5"
 h6 :: Markup -> Markup
-h6 = Parent "h6"
+h6 = parent "h6"
 head :: Markup -> Markup
-head = Parent "head"
+head = parent "head"
 header :: Markup -> Markup
-header = Parent "header"
+header = parent "header"
 hgroup :: Markup -> Markup
-hgroup = Parent "hgroup"
+hgroup = parent "hgroup"
 html :: Markup -> Markup
-html = Parent "html"
+html = parent "html"
 i :: Markup -> Markup
-i = Parent "i"
+i = parent "i"
 iframe :: Markup -> Markup
-iframe = Parent "iframe"
+iframe = parent "iframe"
 ins :: Markup -> Markup
-ins = Parent "ins"
+ins = parent "ins"
 kbd :: Markup -> Markup
-kbd = Parent "kbd"
+kbd = parent "kbd"
 label :: Markup -> Markup
-label = Parent "label"
+label = parent "label"
 legend :: Markup -> Markup
-legend = Parent "legend"
+legend = parent "legend"
 li :: Markup -> Markup
-li = Parent "li"
+li = parent "li"
 map :: Markup -> Markup
-map = Parent "map"
+map = parent "map"
 mark :: Markup -> Markup
-mark = Parent "mark"
+mark = parent "mark"
 menu :: Markup -> Markup
-menu = Parent "menu"
+menu = parent "menu"
 meter :: Markup -> Markup
-meter = Parent "meter"
+meter = parent "meter"
 nav :: Markup -> Markup
-nav = Parent "nav"
+nav = parent "nav"
 noscript :: Markup -> Markup
-noscript = Parent "noscript"
+noscript = parent "noscript"
 object :: Markup -> Markup
-object = Parent "object"
+object = parent "object"
 ol :: Markup -> Markup
-ol = Parent "ol"
+ol = parent "ol"
 optgroup :: Markup -> Markup
-optgroup = Parent "optgroup"
+optgroup = parent "optgroup"
 option :: Markup -> Markup
-option = Parent "option"
+option = parent "option"
 output :: Markup -> Markup
-output = Parent "output"
+output = parent "output"
 p :: Markup -> Markup
-p = Parent "p"
+p = parent "p"
 pre :: Markup -> Markup
-pre = Parent "pre"
+pre = parent "pre"
 progress :: Markup -> Markup
-progress = Parent "progress"
+progress = parent "progress"
 q :: Markup -> Markup
-q = Parent "q"
+q = parent "q"
 rp :: Markup -> Markup
-rp = Parent "rp"
+rp = parent "rp"
 rt :: Markup -> Markup
-rt = Parent "rt"
+rt = parent "rt"
 ruby :: Markup -> Markup
-ruby = Parent "ruby"
+ruby = parent "ruby"
 samp :: Markup -> Markup
-samp = Parent "samp"
+samp = parent "samp"
 script :: Markup -> Markup
-script = Parent "script"
+script = parent "script"
 section :: Markup -> Markup
-section = Parent "section"
+section = parent "section"
 select :: Markup -> Markup
-select = Parent "select"
+select = parent "select"
 small :: Markup -> Markup
-small = Parent "small"
+small = parent "small"
 span :: Markup -> Markup
-span = Parent "span"
+span = parent "span"
 strong :: Markup -> Markup
-strong = Parent "strong"
+strong = parent "strong"
 style :: Markup -> Markup
-style = Parent "style"
+style = parent "style"
 sub :: Markup -> Markup
-sub = Parent "sub"
+sub = parent "sub"
 summary :: Markup -> Markup
-summary = Parent "summary"
+summary = parent "summary"
 sup :: Markup -> Markup
-sup = Parent "sup"
+sup = parent "sup"
 table :: Markup -> Markup
-table = Parent "table"
+table = parent "table"
 tbody :: Markup -> Markup
-tbody = Parent "tbody"
+tbody = parent "tbody"
 td :: Markup -> Markup
-td = Parent "td"
+td = parent "td"
 textarea :: Markup -> Markup
-textarea = Parent "textarea"
+textarea = parent "textarea"
 tfoot :: Markup -> Markup
-tfoot = Parent "tfoot"
+tfoot = parent "tfoot"
 th :: Markup -> Markup
-th = Parent "th"
+th = parent "th"
 thead :: Markup -> Markup
-thead = Parent "thead"
+thead = parent "thead"
 time :: Markup -> Markup
-time = Parent "time"
+time = parent "time"
 title :: Markup -> Markup
-title = Parent "title"
+title = parent "title"
 tr :: Markup -> Markup
-tr = Parent "tr"
+tr = parent "tr"
 ul :: Markup -> Markup
-ul = Parent "ul"
+ul = parent "ul"
 var :: Markup -> Markup
-var = Parent "var"
+var = parent "var"
 video :: Markup -> Markup
-video = Parent "video"
+video = parent "video"
 area :: Markup
-area = Leaf "area"
+area = leaf "area"
 base :: Markup
-base = Leaf "base"
+base = leaf "base"
 br :: Markup
-br = Leaf "br"
+br = leaf "br"
 col :: Markup
-col = Leaf "col"
+col = leaf "col"
 embed :: Markup
-embed = Leaf "embed"
+embed = leaf "embed"
 hr :: Markup
-hr = Leaf "hr"
+hr = leaf "hr"
 img :: Markup
-img = Leaf "img"
+img = leaf "img"
 input :: Markup
-input = Leaf "input"
+input = leaf "input"
 keygen :: Markup
-keygen = Leaf "keygen"
+keygen = leaf "keygen"
 link :: Markup
-link = Leaf "link"
+link = leaf "link"
 menuitem :: Markup
-menuitem = Leaf "menuitem"
+menuitem = leaf "menuitem"
 meta :: Markup
-meta = Leaf "meta"
+meta = leaf "meta"
 param :: Markup
-param = Leaf "param"
+param = leaf "param"
 source :: Markup
-source = Leaf "source"
+source = leaf "source"
 track :: Markup
-track = Leaf "track"
+track = leaf "track"
 wbr :: Markup
-wbr = Leaf "wbr"
+wbr = leaf "wbr"

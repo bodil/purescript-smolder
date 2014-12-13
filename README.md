@@ -27,228 +27,6 @@ doc = html ! lang "en" $ do
 main = trace $ render doc
 ```
 
-## Module Text.Smolder.HTML
-
-### Types
-
-    type Html  = Markup
-
-
-### Values
-
-    a :: Markup -> Markup
-
-    abbr :: Markup -> Markup
-
-    address :: Markup -> Markup
-
-    area :: Markup
-
-    article :: Markup -> Markup
-
-    aside :: Markup -> Markup
-
-    audio :: Markup -> Markup
-
-    b :: Markup -> Markup
-
-    base :: Markup
-
-    bdo :: Markup -> Markup
-
-    blockquote :: Markup -> Markup
-
-    body :: Markup -> Markup
-
-    br :: Markup
-
-    button :: Markup -> Markup
-
-    canvas :: Markup -> Markup
-
-    caption :: Markup -> Markup
-
-    cite :: Markup -> Markup
-
-    code :: Markup -> Markup
-
-    col :: Markup
-
-    colgroup :: Markup -> Markup
-
-    command :: Markup -> Markup
-
-    datalist :: Markup -> Markup
-
-    dd :: Markup -> Markup
-
-    del :: Markup -> Markup
-
-    details :: Markup -> Markup
-
-    dfn :: Markup -> Markup
-
-    div :: Markup -> Markup
-
-    dl :: Markup -> Markup
-
-    dt :: Markup -> Markup
-
-    em :: Markup -> Markup
-
-    embed :: Markup
-
-    fieldset :: Markup -> Markup
-
-    figcaption :: Markup -> Markup
-
-    figure :: Markup -> Markup
-
-    footer :: Markup -> Markup
-
-    form :: Markup -> Markup
-
-    h1 :: Markup -> Markup
-
-    h2 :: Markup -> Markup
-
-    h3 :: Markup -> Markup
-
-    h4 :: Markup -> Markup
-
-    h5 :: Markup -> Markup
-
-    h6 :: Markup -> Markup
-
-    head :: Markup -> Markup
-
-    header :: Markup -> Markup
-
-    hgroup :: Markup -> Markup
-
-    hr :: Markup
-
-    html :: Markup -> Markup
-
-    i :: Markup -> Markup
-
-    iframe :: Markup -> Markup
-
-    img :: Markup
-
-    input :: Markup
-
-    ins :: Markup -> Markup
-
-    kbd :: Markup -> Markup
-
-    keygen :: Markup
-
-    label :: Markup -> Markup
-
-    legend :: Markup -> Markup
-
-    li :: Markup -> Markup
-
-    link :: Markup
-
-    map :: Markup -> Markup
-
-    mark :: Markup -> Markup
-
-    menu :: Markup -> Markup
-
-    menuitem :: Markup
-
-    meta :: Markup
-
-    meter :: Markup -> Markup
-
-    nav :: Markup -> Markup
-
-    noscript :: Markup -> Markup
-
-    object :: Markup -> Markup
-
-    ol :: Markup -> Markup
-
-    optgroup :: Markup -> Markup
-
-    option :: Markup -> Markup
-
-    output :: Markup -> Markup
-
-    p :: Markup -> Markup
-
-    param :: Markup
-
-    pre :: Markup -> Markup
-
-    progress :: Markup -> Markup
-
-    q :: Markup -> Markup
-
-    rp :: Markup -> Markup
-
-    rt :: Markup -> Markup
-
-    ruby :: Markup -> Markup
-
-    samp :: Markup -> Markup
-
-    script :: Markup -> Markup
-
-    section :: Markup -> Markup
-
-    select :: Markup -> Markup
-
-    small :: Markup -> Markup
-
-    source :: Markup
-
-    span :: Markup -> Markup
-
-    strong :: Markup -> Markup
-
-    style :: Markup -> Markup
-
-    sub :: Markup -> Markup
-
-    summary :: Markup -> Markup
-
-    sup :: Markup -> Markup
-
-    table :: Markup -> Markup
-
-    tbody :: Markup -> Markup
-
-    td :: Markup -> Markup
-
-    textarea :: Markup -> Markup
-
-    tfoot :: Markup -> Markup
-
-    th :: Markup -> Markup
-
-    thead :: Markup -> Markup
-
-    time :: Markup -> Markup
-
-    title :: Markup -> Markup
-
-    tr :: Markup -> Markup
-
-    track :: Markup
-
-    ul :: Markup -> Markup
-
-    var :: Markup -> Markup
-
-    video :: Markup -> Markup
-
-    wbr :: Markup
-
-
 ## Module Text.Smolder.HTML.Attributes
 
 ### Values
@@ -586,22 +364,243 @@ main = trace $ render doc
     xmlns :: String -> Attribute
 
 
+## Module Text.Smolder.HTML
+
+### Types
+
+    type Html = Markup
+
+
+### Values
+
+    a :: Markup -> Markup
+
+    abbr :: Markup -> Markup
+
+    address :: Markup -> Markup
+
+    area :: Markup
+
+    article :: Markup -> Markup
+
+    aside :: Markup -> Markup
+
+    audio :: Markup -> Markup
+
+    b :: Markup -> Markup
+
+    base :: Markup
+
+    bdo :: Markup -> Markup
+
+    blockquote :: Markup -> Markup
+
+    body :: Markup -> Markup
+
+    br :: Markup
+
+    button :: Markup -> Markup
+
+    canvas :: Markup -> Markup
+
+    caption :: Markup -> Markup
+
+    cite :: Markup -> Markup
+
+    code :: Markup -> Markup
+
+    col :: Markup
+
+    colgroup :: Markup -> Markup
+
+    command :: Markup -> Markup
+
+    datalist :: Markup -> Markup
+
+    dd :: Markup -> Markup
+
+    del :: Markup -> Markup
+
+    details :: Markup -> Markup
+
+    dfn :: Markup -> Markup
+
+    div :: Markup -> Markup
+
+    dl :: Markup -> Markup
+
+    dt :: Markup -> Markup
+
+    em :: Markup -> Markup
+
+    embed :: Markup
+
+    fieldset :: Markup -> Markup
+
+    figcaption :: Markup -> Markup
+
+    figure :: Markup -> Markup
+
+    footer :: Markup -> Markup
+
+    form :: Markup -> Markup
+
+    h1 :: Markup -> Markup
+
+    h2 :: Markup -> Markup
+
+    h3 :: Markup -> Markup
+
+    h4 :: Markup -> Markup
+
+    h5 :: Markup -> Markup
+
+    h6 :: Markup -> Markup
+
+    head :: Markup -> Markup
+
+    header :: Markup -> Markup
+
+    hgroup :: Markup -> Markup
+
+    hr :: Markup
+
+    html :: Markup -> Markup
+
+    i :: Markup -> Markup
+
+    iframe :: Markup -> Markup
+
+    img :: Markup
+
+    input :: Markup
+
+    ins :: Markup -> Markup
+
+    kbd :: Markup -> Markup
+
+    keygen :: Markup
+
+    label :: Markup -> Markup
+
+    legend :: Markup -> Markup
+
+    li :: Markup -> Markup
+
+    link :: Markup
+
+    map :: Markup -> Markup
+
+    mark :: Markup -> Markup
+
+    menu :: Markup -> Markup
+
+    menuitem :: Markup
+
+    meta :: Markup
+
+    meter :: Markup -> Markup
+
+    nav :: Markup -> Markup
+
+    noscript :: Markup -> Markup
+
+    object :: Markup -> Markup
+
+    ol :: Markup -> Markup
+
+    optgroup :: Markup -> Markup
+
+    option :: Markup -> Markup
+
+    output :: Markup -> Markup
+
+    p :: Markup -> Markup
+
+    param :: Markup
+
+    pre :: Markup -> Markup
+
+    progress :: Markup -> Markup
+
+    q :: Markup -> Markup
+
+    rp :: Markup -> Markup
+
+    rt :: Markup -> Markup
+
+    ruby :: Markup -> Markup
+
+    samp :: Markup -> Markup
+
+    script :: Markup -> Markup
+
+    section :: Markup -> Markup
+
+    select :: Markup -> Markup
+
+    small :: Markup -> Markup
+
+    source :: Markup
+
+    span :: Markup -> Markup
+
+    strong :: Markup -> Markup
+
+    style :: Markup -> Markup
+
+    sub :: Markup -> Markup
+
+    summary :: Markup -> Markup
+
+    sup :: Markup -> Markup
+
+    table :: Markup -> Markup
+
+    tbody :: Markup -> Markup
+
+    td :: Markup -> Markup
+
+    textarea :: Markup -> Markup
+
+    tfoot :: Markup -> Markup
+
+    th :: Markup -> Markup
+
+    thead :: Markup -> Markup
+
+    time :: Markup -> Markup
+
+    title :: Markup -> Markup
+
+    tr :: Markup -> Markup
+
+    track :: Markup
+
+    ul :: Markup -> Markup
+
+    var :: Markup -> Markup
+
+    video :: Markup -> Markup
+
+    wbr :: Markup
+
+
 ## Module Text.Smolder.Markup
 
 ### Types
 
-    newtype Attribute where
-      Attribute :: (forall a. MarkupM a -> MarkupM a) -> Attribute
+    data Attr where
+      Attr :: String -> String -> Attr
 
-    type Markup  = MarkupM Unit
+    data Attribute
+
+    type Markup = MarkupM Unit
 
     data MarkupM a where
-      Parent :: String -> MarkupM a -> MarkupM a
-      Leaf :: String -> MarkupM a
-      Content :: String -> MarkupM a
-      Append :: MarkupM a -> MarkupM a -> MarkupM a
-      AddAttribute :: String -> String -> MarkupM a -> MarkupM a
-      Empty :: MarkupM a
+      Element :: String -> Maybe Markup -> [Attr] -> MarkupM a -> MarkupM a
+      Content :: String -> MarkupM a -> MarkupM a
+      Return :: a -> MarkupM a
 
 
 ### Type Classes
@@ -616,9 +615,9 @@ main = trace $ render doc
 
     instance applyMarkupM :: Apply MarkupM
 
-    instance attributableMarkupM :: Attributable (MarkupM a)
+    instance attributableMarkupM :: Attributable (MarkupM Unit)
 
-    instance attributableMarkupMF :: Attributable (MarkupM a -> MarkupM b)
+    instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit)
 
     instance bindMarkupM :: Bind MarkupM
 
@@ -628,7 +627,7 @@ main = trace $ render doc
 
     instance monoidAttribute :: Monoid Attribute
 
-    instance monoidMarkupM :: Monoid (MarkupM a)
+    instance monoidMarkup :: Monoid (MarkupM Unit)
 
     instance semigroupAttribute :: Semigroup Attribute
 
@@ -641,21 +640,25 @@ main = trace $ render doc
 
     attribute :: String -> String -> Attribute
 
-    text :: forall a. String -> MarkupM a
+    leaf :: String -> Markup
+
+    parent :: String -> Markup -> Markup
+
+    text :: forall a. String -> Markup
 
 
 ## Module Text.Smolder.Renderer.String
 
 ### Type Class Instances
 
-    instance showMarkup :: Show (MarkupM Unit)
+    instance showMarkup :: Show (Markup.MarkupM Unit)
 
     instance showNode :: Show Node
 
 
 ### Values
 
-    render :: Markup -> String
+    render :: forall a. Markup.MarkupM a -> String
 
     renderNode :: Node -> String
 
@@ -671,7 +674,7 @@ main = trace $ render doc
 
 ### Values
 
-    renderMarkup :: Markup -> [Node]
+    renderMarkup :: forall a. Markup.MarkupM a -> [Node]
 
 
 ## Module Text.Smolder.Renderer.VTree
@@ -688,6 +691,9 @@ main = trace $ render doc
 
 ### Values
 
-    render :: Markup -> VNode
+    render :: forall a. Markup.MarkupM a -> VNode
 
-    render' :: Markup -> [VNode]
+    render' :: forall a. Markup.MarkupM a -> [VNode]
+
+
+

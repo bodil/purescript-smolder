@@ -3,18 +3,25 @@ module Text.Smolder.Renderer.Util
   , Node(..)
   ) where
 
+import Data.Maybe
+import Data.Tuple
+
 import qualified Data.Map as Map
-import Text.Smolder.Markup
+import qualified Text.Smolder.Markup as Markup
 
 data Node
   = Element String (Map.Map String String) [Node]
   | Text String
 
-renderMarkup :: Markup -> [Node]
-renderMarkup (Parent name children) = [Element name Map.empty $ renderMarkup children]
-renderMarkup (Leaf name) = [Element name Map.empty []]
-renderMarkup (Content text) = [Text text]
-renderMarkup (Append a b) = renderMarkup a ++ renderMarkup b
-renderMarkup (AddAttribute k v n) = case renderMarkup n of
-  (Element n a c : xs) -> [Element n (Map.insert k v a) c] ++ xs
-renderMarkup Empty = []
+renderMarkup :: forall a. Markup.MarkupM a -> [Node]
+renderMarkup (Markup.Element name (Just children) attrs rest) = 
+  Element name (renderAttrs attrs) (renderMarkup children) : renderMarkup rest
+renderMarkup (Markup.Element name Nothing attrs rest) = 
+  Element name (renderAttrs attrs) [] : renderMarkup rest
+renderMarkup (Markup.Content text rest) = Text text : renderMarkup rest
+renderMarkup (Markup.Return _) = []
+
+renderAttrs :: [Markup.Attr] -> Map.Map String String
+renderAttrs xs = Map.fromList $ toTuple <$> xs 
+  where
+  toTuple (Markup.Attr key value) = Tuple key value
