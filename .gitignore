@@ -2,3 +2,5 @@
 /node_modules/
 /output/
 /.tern-port
+.psci
+.psci_modules/
