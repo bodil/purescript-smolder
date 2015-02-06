@@ -14,8 +14,8 @@ address = parent "address"
 a :: Markup -> Markup
 a = parent "a"
 
-area = leaf "area"
 area :: Markup
+area = leaf "area"
 
 article :: Markup -> Markup
 article = parent "article"
@@ -26,8 +26,8 @@ aside = parent "aside"
 audio :: Markup -> Markup
 audio = parent "audio"
 
-base = leaf "base"
 base :: Markup
+base = leaf "base"
 
 bdo :: Markup -> Markup
 bdo = parent "bdo"
@@ -36,13 +36,13 @@ blockquote :: Markup -> Markup
 blockquote = parent "blockquote"
 
 b :: Markup -> Markup
-body :: Markup -> Markup
-
-body = parent "body"
 b = parent "b"
 
-br = leaf "br"
+body :: Markup -> Markup
+body = parent "body"
+
 br :: Markup
+br = leaf "br"
 
 button :: Markup -> Markup
 button = parent "button"
@@ -62,8 +62,8 @@ code = parent "code"
 colgroup :: Markup -> Markup
 colgroup = parent "colgroup"
 
-col = leaf "col"
 col :: Markup
+col = leaf "col"
 
 command :: Markup -> Markup
 command = parent "command"
@@ -92,8 +92,8 @@ dl = parent "dl"
 dt :: Markup -> Markup
 dt = parent "dt"
 
-embed = leaf "embed"
 embed :: Markup
+embed = leaf "embed"
 
 em :: Markup -> Markup
 em = parent "em"
@@ -140,8 +140,8 @@ head = parent "head"
 hgroup :: Markup -> Markup
 hgroup = parent "hgroup"
 
-hr = leaf "hr"
 hr :: Markup
+hr = leaf "hr"
 
 html :: Markup -> Markup
 html = parent "html"
@@ -150,22 +150,22 @@ iframe :: Markup -> Markup
 iframe = parent "iframe"
 
 i :: Markup -> Markup
-img = leaf "img"
+i = parent "i"
 
 img :: Markup
-input = leaf "input"
+img = leaf "img"
 
 input :: Markup
-ins :: Markup -> Markup
+input = leaf "input"
 
+ins :: Markup -> Markup
 ins = parent "ins"
-i = parent "i"
 
 kbd :: Markup -> Markup
 kbd = parent "kbd"
 
-keygen = leaf "keygen"
 keygen :: Markup
+keygen = leaf "keygen"
 
 label :: Markup -> Markup
 label = parent "label"
@@ -185,14 +185,14 @@ map = parent "map"
 mark :: Markup -> Markup
 mark = parent "mark"
 
-menuitem = leaf "menuitem"
 menuitem :: Markup
+menuitem = leaf "menuitem"
 
 menu :: Markup -> Markup
 menu = parent "menu"
 
-meta = leaf "meta"
 meta :: Markup
+meta = leaf "meta"
 
 meter :: Markup -> Markup
 meter = parent "meter"
@@ -218,8 +218,8 @@ option = parent "option"
 output :: Markup -> Markup
 output = parent "output"
 
-param = leaf "param"
 param :: Markup
+param = leaf "param"
 
 p :: Markup -> Markup
 p = parent "p"
@@ -257,8 +257,8 @@ select = parent "select"
 small :: Markup -> Markup
 small = parent "small"
 
-source = leaf "source"
 source :: Markup
+source = leaf "source"
 
 span :: Markup -> Markup
 span = parent "span"
@@ -305,8 +305,8 @@ time = parent "time"
 title :: Markup -> Markup
 title = parent "title"
 
-track = leaf "track"
 track :: Markup
+track = leaf "track"
 
 tr :: Markup -> Markup
 tr = parent "tr"
