@@ -6,11 +6,13 @@ inspired by Haskell's [BlazeHtml](http://jaspervdj.be/blaze/).
 ```purescript
 module Main where
 
+import Prelude
+import Control.Monad.Eff.Console
+
 import Text.Smolder.HTML (html, head, meta, link, title, body, h1, p)
 import Text.Smolder.HTML.Attributes (lang, charset, httpEquiv, content, name, rel, href)
 import Text.Smolder.Markup (text, (!))
 import Text.Smolder.Renderer.String (render)
-import Debug.Trace
 
 doc = html ! lang "en" $ do
   head $ do
@@ -24,7 +26,7 @@ doc = html ! lang "en" $ do
     h1 $ text "OMG HAI LOL"
     p $ text "This is clearly the best HTML DSL ever invented."
 
-main = trace $ render doc
+main = print $ render doc
 ```
 
 ## Module Text.Smolder.HTML.Attributes

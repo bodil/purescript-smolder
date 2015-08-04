@@ -3,9 +3,12 @@ module Text.Smolder.Renderer.String
   , renderNode
   ) where
 
+import Prelude
+
 import qualified Data.Map as Map
 import qualified Text.Smolder.Markup as Markup
 
+import Data.List (fromList)
 import Data.Maybe
 import Data.String
 import Text.Smolder.Renderer.Util
@@ -15,7 +18,7 @@ renderNode :: Node -> String
 renderNode (Element n a c) = "<" ++ n ++ showAttrs a ++ showTail c
   where showTail [] = "/>"
         showTail c = ">" ++ joinWith "" (show <$> c) ++ "</" ++ n ++ ">"
-        showAttrs a = joinWith "" $ pair <$> (Map.keys a)
+        showAttrs a = joinWith "" $ fromList $ pair <$> (Map.keys a)
           where pair k = " " ++ k ++ case Map.lookup k a of
                   Just v -> "=\"" ++ v ++ "\""
                   Nothing -> ""
