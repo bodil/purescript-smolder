@@ -7,10 +7,13 @@ module Text.Smolder.Markup
   , text
   , Attribute()
   , Attributable
+  , with
   , attribute
   , (!)
   , (!?)
   ) where
+
+import Prelude
 
 import Data.Maybe
 import Data.Monoid
@@ -20,7 +23,7 @@ import Control.Apply ((*>))
 data Attr = Attr String String
 
 data MarkupM a
-  = Element String (Maybe Markup) [Attr] (MarkupM a)
+  = Element String (Maybe Markup) (Array Attr) (MarkupM a)
   | Content String (MarkupM a)
   | Return a 
 
@@ -36,35 +39,33 @@ text :: forall a. String -> Markup
 text s = Content s (Return unit)
 
 instance semigroupMarkupM :: Semigroup (MarkupM a) where
-  (<>) x y = x *> y
+  append x y = x *> y
 
 instance monoidMarkup :: Monoid (MarkupM Unit) where
   mempty = Return unit
 
 instance functorMarkupM :: Functor MarkupM where
-  (<$>) f (Element el kids attrs rest) = Element el kids attrs (f <$> rest)
-  (<$>) f (Content s rest) = Content s (f <$> rest)
-  (<$>) f (Return a) = Return (f a)
+  map f (Element el kids attrs rest) = Element el kids attrs (map f rest)
+  map f (Content s rest) = Content s (map f rest)
+  map f (Return a) = Return (f a)
 
 instance applyMarkupM :: Apply MarkupM where
-  (<*>) = ap
+  apply = ap
 
 instance applicativeMarkupM :: Applicative MarkupM where
   pure = Return
 
 instance bindMarkupM :: Bind MarkupM where
-  (>>=) (Element el kids attrs rest) f = Element el kids attrs (rest >>= f)
-  (>>=) (Content s rest) f = Content s (rest >>= f)
-  (>>=) (Return a) f = f a
+  bind (Element el kids attrs rest) f = Element el kids attrs (bind rest f)
+  bind (Content s rest) f = Content s (bind rest f)
+  bind (Return a) f = f a
 
 instance monadMarkupM :: Monad MarkupM
 
-
-
-data Attribute = Attribute [Attr]
+data Attribute = Attribute (Array Attr)
 
 instance semigroupAttribute :: Semigroup Attribute where
-  (<>) (Attribute xs) (Attribute ys) = Attribute (xs <> ys)
+  append (Attribute xs) (Attribute ys) = Attribute (append xs ys)
 
 instance monoidAttribute :: Monoid Attribute where
   mempty = Attribute mempty
@@ -72,15 +73,19 @@ instance monoidAttribute :: Monoid Attribute where
 attribute :: String -> String -> Attribute
 attribute key value = Attribute [Attr key value]
 
-infixl 4 !
 class Attributable a where
-  (!) :: a -> Attribute -> a
+  with :: a -> Attribute -> a
 
 instance attributableMarkupM :: Attributable (MarkupM Unit) where
-  (!) (Element el kids attrs rest) (Attribute xs) = Element el kids (attrs <> xs) rest
+  with (Element el kids attrs rest) (Attribute xs) = Element el kids (attrs <> xs) rest
 
 instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit) where
-  (!) k xs m = k m ! xs
+  with k xs m = k m `with` xs
+
+infixl 4 !
+
+(!) :: forall a. (Attributable a) => a -> Attribute -> a
+(!) = with
 
 infixl 4 !?
 
