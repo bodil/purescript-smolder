@@ -6,6 +6,10 @@
   ],
   "description": "A combinator library for generating markup",
   "license": "LGPL-3.0+",
+  "repository": {                                                          
+    "type": "git",                                                         
+    "url": "git://github.com/bodil/purescript-smolder.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
