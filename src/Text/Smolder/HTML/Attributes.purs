@@ -1,6 +1,5 @@
 module Text.Smolder.HTML.Attributes where
 
-import Prelude ()
 import Text.Smolder.Markup
 
 accept :: String -> Attribute

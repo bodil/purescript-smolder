@@ -5,12 +5,12 @@ module Text.Smolder.Renderer.Util
 
 import Prelude
 
-import Data.Maybe
-import Data.Tuple
-import Data.List
+import Data.Maybe (Maybe(..))
+import Data.Tuple (Tuple(..))
+import Data.List (List(..), toList, (:))
 
-import qualified Data.Map as Map
-import qualified Text.Smolder.Markup as Markup
+import Data.Map as Map
+import Text.Smolder.Markup as Markup
 
 data Node
   = Element String (Map.Map String String) (List Node)

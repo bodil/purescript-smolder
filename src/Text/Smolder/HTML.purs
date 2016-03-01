@@ -1,6 +1,5 @@
 module Text.Smolder.HTML where
 
-import Prelude ()
 import Text.Smolder.Markup
 
 type Html = Markup

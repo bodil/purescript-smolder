@@ -6,14 +6,12 @@ module Text.Smolder.Renderer.String
 import Prelude
 
 import Data.List (List(..))
-import Data.Maybe
-import Data.String
 import Data.Foldable (fold, foldMap)
 
-import qualified Data.Map as Map
-import qualified Text.Smolder.Markup as Markup
+import Data.Map as Map
+import Text.Smolder.Markup as Markup
 
-import Text.Smolder.Renderer.Util
+import Text.Smolder.Renderer.Util (Node(..), renderMarkup)
 
 -- | Render a node as a HTML string.
 -- |

@@ -18,15 +18,15 @@ data MarkupM a
 
 ##### Instances
 ``` purescript
-instance semigroupMarkupM :: Semigroup (MarkupM a)
-instance monoidMarkup :: Monoid (MarkupM Unit)
-instance functorMarkupM :: Functor MarkupM
-instance applyMarkupM :: Apply MarkupM
-instance applicativeMarkupM :: Applicative MarkupM
-instance bindMarkupM :: Bind MarkupM
-instance monadMarkupM :: Monad MarkupM
-instance attributableMarkupM :: Attributable (MarkupM Unit)
-instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit)
+Semigroup (MarkupM a)
+Monoid (MarkupM Unit)
+Functor MarkupM
+Apply MarkupM
+Applicative MarkupM
+Bind MarkupM
+Monad MarkupM
+Attributable (MarkupM Unit)
+Attributable (MarkupM Unit -> MarkupM Unit)
 ```
 
 #### `Markup`
@@ -50,7 +50,7 @@ leaf :: String -> Markup
 #### `text`
 
 ``` purescript
-text :: forall a. String -> Markup
+text :: String -> Markup
 ```
 
 #### `Attribute`
@@ -61,8 +61,8 @@ data Attribute
 
 ##### Instances
 ``` purescript
-instance semigroupAttribute :: Semigroup Attribute
-instance monoidAttribute :: Monoid Attribute
+Semigroup Attribute
+Monoid Attribute
 ```
 
 #### `attribute`
@@ -80,22 +80,28 @@ class Attributable a where
 
 ##### Instances
 ``` purescript
-instance attributableMarkupM :: Attributable (MarkupM Unit)
-instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit)
+Attributable (MarkupM Unit)
+Attributable (MarkupM Unit -> MarkupM Unit)
 ```
 
 #### `(!)`
 
 ``` purescript
-(!) :: forall a. (Attributable a) => a -> Attribute -> a
+infixl 4 with as !
 ```
 
 _left-associative / precedence 4_
 
+#### `optionalWith`
+
+``` purescript
+optionalWith :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
+```
+
 #### `(!?)`
 
 ``` purescript
-(!?) :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
+infixl 4 optionalWith as !?
 ```
 
 _left-associative / precedence 4_

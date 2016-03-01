@@ -6,17 +6,18 @@ module Text.Smolder.Markup
   , leaf
   , text
   , Attribute()
-  , Attributable
+  , class Attributable
   , with
   , attribute
   , (!)
+  , optionalWith
   , (!?)
   ) where
 
 import Prelude
 
-import Data.Maybe
-import Data.Monoid
+import Data.Maybe (Maybe(..))
+import Data.Monoid (class Monoid, mempty)
 
 import Control.Apply ((*>))
 
@@ -35,7 +36,7 @@ parent el kids = Element el (Just kids) [] (Return unit)
 leaf :: String -> Markup
 leaf el = Element el Nothing [] (Return unit)
 
-text :: forall a. String -> Markup
+text :: String -> Markup
 text s = Content s (Return unit)
 
 instance semigroupMarkupM :: Semigroup (MarkupM a) where
@@ -82,12 +83,9 @@ instance attributableMarkupM :: Attributable (MarkupM Unit) where
 instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit) where
   with k xs m = k m `with` xs
 
-infixl 4 !
+infixl 4 with as !
 
-(!) :: forall a. (Attributable a) => a -> Attribute -> a
-(!) = with
+optionalWith :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
+optionalWith h c a = if c then h ! a else h
 
-infixl 4 !?
-
-(!?) :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
-(!?) h c a = if c then h ! a else h
+infixl 4 optionalWith as !?
