@@ -19,11 +19,11 @@
     "output"
   ],
   "dependencies": {
-    "purescript-monoid": "^0.3.2",
-    "purescript-maps": "^0.5.4",
-    "purescript-strings": "^0.7.1"
+    "purescript-monoid": "^1.0.0",
+    "purescript-maps": "^1.0.0",
+    "purescript-strings": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-console": "^0.1.1"
+    "purescript-console": "^1.0.0"
   }
 }

@@ -7,7 +7,7 @@ import Prelude
 
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
-import Data.List (List(..), toList, (:))
+import Data.List (List(..), fromFoldable, (:))
 
 import Data.Map as Map
 import Text.Smolder.Markup as Markup
@@ -25,6 +25,6 @@ renderMarkup (Markup.Content text rest) = Text text : renderMarkup rest
 renderMarkup (Markup.Return _) = Nil
 
 renderAttrs :: Array Markup.Attr -> Map.Map String String
-renderAttrs = Map.fromList <<< map toTuple <<< toList
+renderAttrs = Map.fromList <<< map toTuple <<< fromFoldable
   where
   toTuple (Markup.Attr key value) = Tuple key value

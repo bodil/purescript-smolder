@@ -17,17 +17,17 @@ import Text.Smolder.Renderer.Util (Node(..), renderMarkup)
 -- |
 -- | TODO: attr values and text content must be properly escaped.
 renderNode :: Node -> String
-renderNode (Element n a c) = "<" ++ n ++ showAttrs a ++ showTail c
-  where 
-  showTail :: List Node -> String 
+renderNode (Element n a c) = "<" <> n <> showAttrs a <> showTail c
+  where
+  showTail :: List Node -> String
   showTail Nil = "/>"
-  showTail c = ">" ++ fold (map renderNode c) ++ "</" ++ n ++ ">"
-  
+  showTail c = ">" <> fold (map renderNode c) <> "</" <> n <> ">"
+
   showAttrs :: Map.Map String String -> String
   showAttrs a = fold $ map pair (Map.keys a)
     where
     pair :: String -> String
-    pair k = " " ++ k ++ foldMap (\v -> "=\"" ++ v ++ "\"") (Map.lookup k a)
+    pair k = " " <> k <> foldMap (\v -> "=\"" <> v <> "\"") (Map.lookup k a)
 renderNode (Text s) = s
 
 -- | Render markup as a HTML string.

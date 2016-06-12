@@ -79,6 +79,7 @@ class Attributable a where
 
 instance attributableMarkupM :: Attributable (MarkupM Unit) where
   with (Element el kids attrs rest) (Attribute xs) = Element el kids (attrs <> xs) rest
+  with xs _ = xs
 
 instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit) where
   with k xs m = k m `with` xs
