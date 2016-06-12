@@ -2,13 +2,15 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff.Console (log)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE, log)
 
 import Text.Smolder.HTML (html, head, meta, link, title, body, h1, p)
 import Text.Smolder.HTML.Attributes (lang, charset, httpEquiv, content, name, rel, href)
-import Text.Smolder.Markup (text, (!))
+import Text.Smolder.Markup (Markup, text, (!))
 import Text.Smolder.Renderer.String (render)
 
+doc :: Markup
 doc = html ! lang "en" $ do
   head $ do
     meta ! charset "utf-8"
@@ -21,4 +23,5 @@ doc = html ! lang "en" $ do
     h1 $ text "OMG HAI LOL"
     p $ text "This is clearly the best HTML DSL ever invented."
 
+main :: Eff (console :: CONSOLE) Unit
 main = log $ render doc
