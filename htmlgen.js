@@ -10,9 +10,9 @@ function sanitise(n) {
   return (reservedWords[n] || n).replace(/-\w/g, function(s) {return s[1].toUpperCase()});
 }
 
-var html = fs.createWriteStream("src/HTML.purs");
+var html = fs.createWriteStream("src/Text/Smolder/HTML.purs");
 
-html.write("module Text.Smolder.HTML where\n\nimport Prelude ()\nimport Text.Smolder.Markup\n\ntype Html = Markup\n\n");
+html.write("module Text.Smolder.HTML where\n\nimport Text.Smolder.Markup (Markup, parent, leaf)\n\ntype Html = Markup\n\n");
 
 [
   "a", "abbr", "address", "article", "aside", "audio", "b", "bdo", "blockquote",
@@ -38,9 +38,9 @@ html.write("module Text.Smolder.HTML where\n\nimport Prelude ()\nimport Text.Smo
             " = leaf \"" + el + "\"\n");
 });
 
-var attrs = fs.createWriteStream("src/HTML/Attributes.purs");
+var attrs = fs.createWriteStream("src/Text/Smolder/HTML/Attributes.purs");
 
-attrs.write("module Text.Smolder.HTML.Attributes where\n\nimport Prelude ()\nimport Text.Smolder.Markup\n\n");
+attrs.write("module Text.Smolder.HTML.Attributes where\n\nimport Text.Smolder.Markup (Attribute, attribute)\n\n");
 
 [
   "accept", "accept-charset", "accesskey", "action", "alt", "async",

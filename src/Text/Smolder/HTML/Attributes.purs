@@ -1,6 +1,6 @@
 module Text.Smolder.HTML.Attributes where
 
-import Text.Smolder.Markup
+import Text.Smolder.Markup (Attribute, attribute)
 
 accept :: String -> Attribute
 accept = attribute "accept"

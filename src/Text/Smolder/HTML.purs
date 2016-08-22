@@ -1,6 +1,6 @@
 module Text.Smolder.HTML where
 
-import Text.Smolder.Markup
+import Text.Smolder.Markup (Markup, parent, leaf)
 
 type Html = Markup
 
