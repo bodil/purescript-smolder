@@ -21,7 +21,9 @@
   "dependencies": {
     "purescript-monoid": "^1.0.0",
     "purescript-maps": "^1.0.0",
-    "purescript-strings": "^1.0.0"
+    "purescript-strings": "^1.0.0",
+    "purescript-catenable-lists": "^1.1.0",
+    "purescript-tuples": "^1.0.0"
   },
   "devDependencies": {
     "purescript-console": "^1.0.0"

@@ -15,26 +15,24 @@ module Text.Smolder.Markup
   ) where
 
 import Prelude
-
-import Data.Maybe (Maybe(..))
+import Data.CatList (CatList)
+import Data.Maybe (Maybe(Just, Nothing))
 import Data.Monoid (class Monoid, mempty)
-
-import Control.Apply ((*>))
 
 data Attr = Attr String String
 
 data MarkupM a
-  = Element String (Maybe Markup) (Array Attr) (MarkupM a)
+  = Element String (Maybe Markup) (CatList Attr) (MarkupM a)
   | Content String (MarkupM a)
   | Return a 
 
 type Markup = MarkupM Unit
 
 parent :: String -> Markup -> Markup
-parent el kids = Element el (Just kids) [] (Return unit)
+parent el kids = Element el (Just kids) mempty (Return unit)
 
 leaf :: String -> Markup
-leaf el = Element el Nothing [] (Return unit)
+leaf el = Element el Nothing mempty (Return unit)
 
 text :: String -> Markup
 text s = Content s (Return unit)
@@ -63,7 +61,7 @@ instance bindMarkupM :: Bind MarkupM where
 
 instance monadMarkupM :: Monad MarkupM
 
-data Attribute = Attribute (Array Attr)
+data Attribute = Attribute (CatList Attr)
 
 instance semigroupAttribute :: Semigroup Attribute where
   append (Attribute xs) (Attribute ys) = Attribute (append xs ys)
@@ -72,7 +70,7 @@ instance monoidAttribute :: Monoid Attribute where
   mempty = Attribute mempty
 
 attribute :: String -> String -> Attribute
-attribute key value = Attribute [Attr key value]
+attribute key value = Attribute (pure $ Attr key value)
 
 class Attributable a where
   with :: a -> Attribute -> a
