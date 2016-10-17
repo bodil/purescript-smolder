@@ -99,7 +99,7 @@ infixl 4 optionalWith as !?
 
 data EventHandlers e = EventHandlers (CatList (EventHandler e))
 
-class Eventable e a where
+class Eventable e a | a -> e where
   withEvent :: a -> EventHandlers e -> a
 
 instance eventableMarkupM :: Eventable e (MarkupM e Unit) where
