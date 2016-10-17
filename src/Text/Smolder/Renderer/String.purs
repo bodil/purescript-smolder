@@ -8,7 +8,7 @@ import Data.Foldable (fold, foldMap)
 import Data.List (List(Nil))
 import Data.Maybe (maybe)
 import Data.StrMap (fromFoldable, keys, lookup, StrMap)
-import Data.String (split, joinWith)
+import Data.String (Pattern(Pattern), split, joinWith)
 import Data.Tuple.Nested ((/\))
 import Text.Smolder.Markup (MarkupM)
 import Text.Smolder.Renderer.Util (Node(Text, Element), renderMarkup)
@@ -27,19 +27,17 @@ escapeChar :: String -> String
 escapeChar s = maybe s id $ lookup s escapeMap
 
 escape :: String -> String
-escape s = joinWith "" (escapeChar <$> (split "" s))
+escape s = joinWith "" (escapeChar <$> (split (Pattern "") s))
 
 -- | Render a node as an HTML string.
 -- |
 -- | TODO: attr values and text content must be properly escaped.
-renderNode :: Node -> String
-renderNode (Element n a c) = "<" <> n <> showAttrs a <> showTail c
+renderNode :: forall e. Node e -> String
+renderNode (Element n a e c) = "<" <> n <> showAttrs a <> showTail c
   where
-  showTail :: List Node -> String
   showTail Nil = "/>"
   showTail c = ">" <> fold (map renderNode c) <> "</" <> n <> ">"
 
-  showAttrs :: StrMap String -> String
   showAttrs a = fold $ map pair (keys a)
     where
     pair :: String -> String
@@ -47,5 +45,5 @@ renderNode (Element n a c) = "<" <> n <> showAttrs a <> showTail c
 renderNode (Text s) = escape s
 
 -- | Render markup as an HTML string.
-render :: forall a. MarkupM a -> String
+render :: forall e a. MarkupM e a -> String
 render = fold <<< map renderNode <<< renderMarkup

@@ -10,7 +10,7 @@ import Text.Smolder.HTML.Attributes (lang, charset, httpEquiv, content, name, re
 import Text.Smolder.Markup (Markup, text, (!))
 import Text.Smolder.Renderer.String (render)
 
-doc :: Markup
+doc :: forall e. Markup e
 doc = html ! lang "en" $ do
   head $ do
     meta ! charset "utf-8"

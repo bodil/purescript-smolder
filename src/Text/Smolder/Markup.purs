@@ -2,6 +2,7 @@ module Text.Smolder.Markup
   ( MarkupM(..)
   , Markup()
   , Attr(..)
+  , EventHandler(..)
   , parent
   , leaf
   , text
@@ -12,6 +13,11 @@ module Text.Smolder.Markup
   , (!)
   , optionalWith
   , (!?)
+  , EventHandlers(..)
+  , class Eventable
+  , withEvent
+  , on
+  , (#!)
   ) where
 
 import Prelude
@@ -21,45 +27,47 @@ import Data.Monoid (class Monoid, mempty)
 
 data Attr = Attr String String
 
-data MarkupM a
-  = Element String (Maybe Markup) (CatList Attr) (MarkupM a)
-  | Content String (MarkupM a)
-  | Return a 
+data EventHandler e = EventHandler String e
 
-type Markup = MarkupM Unit
+data MarkupM e a
+  = Element String (Maybe (Markup e)) (CatList Attr) (CatList (EventHandler e)) (MarkupM e a)
+  | Content String (MarkupM e a)
+  | Return a
 
-parent :: String -> Markup -> Markup
-parent el kids = Element el (Just kids) mempty (Return unit)
+type Markup e = MarkupM e Unit
 
-leaf :: String -> Markup
-leaf el = Element el Nothing mempty (Return unit)
+parent :: forall e. String -> Markup e -> Markup e
+parent el kids = Element el (Just kids) mempty mempty (Return unit)
 
-text :: String -> Markup
+leaf :: forall e. String -> Markup e
+leaf el = Element el Nothing mempty mempty (Return unit)
+
+text :: forall e. String -> Markup e
 text s = Content s (Return unit)
 
-instance semigroupMarkupM :: Semigroup (MarkupM a) where
+instance semigroupMarkupM :: Semigroup (MarkupM e a) where
   append x y = x *> y
 
-instance monoidMarkup :: Monoid (MarkupM Unit) where
+instance monoidMarkup :: Monoid (MarkupM e Unit) where
   mempty = Return unit
 
-instance functorMarkupM :: Functor MarkupM where
-  map f (Element el kids attrs rest) = Element el kids attrs (map f rest)
+instance functorMarkupM :: Functor (MarkupM e) where
+  map f (Element el kids attrs events rest) = Element el kids attrs events (map f rest)
   map f (Content s rest) = Content s (map f rest)
   map f (Return a) = Return (f a)
 
-instance applyMarkupM :: Apply MarkupM where
+instance applyMarkupM :: Apply (MarkupM e) where
   apply = ap
 
-instance applicativeMarkupM :: Applicative MarkupM where
+instance applicativeMarkupM :: Applicative (MarkupM e) where
   pure = Return
 
-instance bindMarkupM :: Bind MarkupM where
-  bind (Element el kids attrs rest) f = Element el kids attrs (bind rest f)
+instance bindMarkupM :: Bind (MarkupM e) where
+  bind (Element el kids attrs events rest) f = Element el kids attrs events (bind rest f)
   bind (Content s rest) f = Content s (bind rest f)
   bind (Return a) f = f a
 
-instance monadMarkupM :: Monad MarkupM
+instance monadMarkupM :: Monad (MarkupM e)
 
 data Attribute = Attribute (CatList Attr)
 
@@ -75,11 +83,11 @@ attribute key value = Attribute (pure $ Attr key value)
 class Attributable a where
   with :: a -> Attribute -> a
 
-instance attributableMarkupM :: Attributable (MarkupM Unit) where
-  with (Element el kids attrs rest) (Attribute xs) = Element el kids (attrs <> xs) rest
+instance attributableMarkupM :: Attributable (MarkupM e Unit) where
+  with (Element el kids attrs events rest) (Attribute xs) = Element el kids (attrs <> xs) events rest
   with xs _ = xs
 
-instance attributableMarkupMF :: Attributable (MarkupM Unit -> MarkupM Unit) where
+instance attributableMarkupMF :: Attributable (MarkupM e Unit -> MarkupM e Unit) where
   with k xs m = k m `with` xs
 
 infixl 4 with as !
@@ -88,3 +96,21 @@ optionalWith :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
 optionalWith h c a = if c then h ! a else h
 
 infixl 4 optionalWith as !?
+
+data EventHandlers e = EventHandlers (CatList (EventHandler e))
+
+class Eventable e a where
+  withEvent :: a -> EventHandlers e -> a
+
+instance eventableMarkupM :: Eventable e (MarkupM e Unit) where
+  withEvent (Element el kids attrs events rest) (EventHandlers es) =
+    Element el kids attrs (events <> es) rest
+  withEvent xs _ = xs
+
+instance eventableMarkupMF :: Eventable e (MarkupM e Unit -> MarkupM e Unit) where
+  withEvent k xs m = k m `withEvent` xs
+
+infixl 4 withEvent as #!
+
+on :: forall e. String -> e -> EventHandlers e
+on name handler = EventHandlers (pure $ EventHandler name handler)

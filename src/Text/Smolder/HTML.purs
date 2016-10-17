@@ -2,217 +2,217 @@ module Text.Smolder.HTML where
 
 import Text.Smolder.Markup (Markup, parent, leaf)
 
-type Html = Markup
+type Html e = Markup e
 
-a :: Markup -> Markup
+a :: forall e. Markup e -> Markup e
 a = parent "a"
-abbr :: Markup -> Markup
+abbr :: forall e. Markup e -> Markup e
 abbr = parent "abbr"
-address :: Markup -> Markup
+address :: forall e. Markup e -> Markup e
 address = parent "address"
-article :: Markup -> Markup
+article :: forall e. Markup e -> Markup e
 article = parent "article"
-aside :: Markup -> Markup
+aside :: forall e. Markup e -> Markup e
 aside = parent "aside"
-audio :: Markup -> Markup
+audio :: forall e. Markup e -> Markup e
 audio = parent "audio"
-b :: Markup -> Markup
+b :: forall e. Markup e -> Markup e
 b = parent "b"
-bdo :: Markup -> Markup
+bdo :: forall e. Markup e -> Markup e
 bdo = parent "bdo"
-blockquote :: Markup -> Markup
+blockquote :: forall e. Markup e -> Markup e
 blockquote = parent "blockquote"
-body :: Markup -> Markup
+body :: forall e. Markup e -> Markup e
 body = parent "body"
-button :: Markup -> Markup
+button :: forall e. Markup e -> Markup e
 button = parent "button"
-canvas :: Markup -> Markup
+canvas :: forall e. Markup e -> Markup e
 canvas = parent "canvas"
-caption :: Markup -> Markup
+caption :: forall e. Markup e -> Markup e
 caption = parent "caption"
-cite :: Markup -> Markup
+cite :: forall e. Markup e -> Markup e
 cite = parent "cite"
-code :: Markup -> Markup
+code :: forall e. Markup e -> Markup e
 code = parent "code"
-colgroup :: Markup -> Markup
+colgroup :: forall e. Markup e -> Markup e
 colgroup = parent "colgroup"
-command :: Markup -> Markup
+command :: forall e. Markup e -> Markup e
 command = parent "command"
-datalist :: Markup -> Markup
+datalist :: forall e. Markup e -> Markup e
 datalist = parent "datalist"
-dd :: Markup -> Markup
+dd :: forall e. Markup e -> Markup e
 dd = parent "dd"
-del :: Markup -> Markup
+del :: forall e. Markup e -> Markup e
 del = parent "del"
-details :: Markup -> Markup
+details :: forall e. Markup e -> Markup e
 details = parent "details"
-dfn :: Markup -> Markup
+dfn :: forall e. Markup e -> Markup e
 dfn = parent "dfn"
-div :: Markup -> Markup
+div :: forall e. Markup e -> Markup e
 div = parent "div"
-dl :: Markup -> Markup
+dl :: forall e. Markup e -> Markup e
 dl = parent "dl"
-dt :: Markup -> Markup
+dt :: forall e. Markup e -> Markup e
 dt = parent "dt"
-em :: Markup -> Markup
+em :: forall e. Markup e -> Markup e
 em = parent "em"
-fieldset :: Markup -> Markup
+fieldset :: forall e. Markup e -> Markup e
 fieldset = parent "fieldset"
-figcaption :: Markup -> Markup
+figcaption :: forall e. Markup e -> Markup e
 figcaption = parent "figcaption"
-figure :: Markup -> Markup
+figure :: forall e. Markup e -> Markup e
 figure = parent "figure"
-footer :: Markup -> Markup
+footer :: forall e. Markup e -> Markup e
 footer = parent "footer"
-form :: Markup -> Markup
+form :: forall e. Markup e -> Markup e
 form = parent "form"
-h1 :: Markup -> Markup
+h1 :: forall e. Markup e -> Markup e
 h1 = parent "h1"
-h2 :: Markup -> Markup
+h2 :: forall e. Markup e -> Markup e
 h2 = parent "h2"
-h3 :: Markup -> Markup
+h3 :: forall e. Markup e -> Markup e
 h3 = parent "h3"
-h4 :: Markup -> Markup
+h4 :: forall e. Markup e -> Markup e
 h4 = parent "h4"
-h5 :: Markup -> Markup
+h5 :: forall e. Markup e -> Markup e
 h5 = parent "h5"
-h6 :: Markup -> Markup
+h6 :: forall e. Markup e -> Markup e
 h6 = parent "h6"
-head :: Markup -> Markup
+head :: forall e. Markup e -> Markup e
 head = parent "head"
-header :: Markup -> Markup
+header :: forall e. Markup e -> Markup e
 header = parent "header"
-hgroup :: Markup -> Markup
+hgroup :: forall e. Markup e -> Markup e
 hgroup = parent "hgroup"
-html :: Markup -> Markup
+html :: forall e. Markup e -> Markup e
 html = parent "html"
-i :: Markup -> Markup
+i :: forall e. Markup e -> Markup e
 i = parent "i"
-iframe :: Markup -> Markup
+iframe :: forall e. Markup e -> Markup e
 iframe = parent "iframe"
-ins :: Markup -> Markup
+ins :: forall e. Markup e -> Markup e
 ins = parent "ins"
-kbd :: Markup -> Markup
+kbd :: forall e. Markup e -> Markup e
 kbd = parent "kbd"
-label :: Markup -> Markup
+label :: forall e. Markup e -> Markup e
 label = parent "label"
-legend :: Markup -> Markup
+legend :: forall e. Markup e -> Markup e
 legend = parent "legend"
-li :: Markup -> Markup
+li :: forall e. Markup e -> Markup e
 li = parent "li"
-map :: Markup -> Markup
+map :: forall e. Markup e -> Markup e
 map = parent "map"
-mark :: Markup -> Markup
+mark :: forall e. Markup e -> Markup e
 mark = parent "mark"
-menu :: Markup -> Markup
+menu :: forall e. Markup e -> Markup e
 menu = parent "menu"
-meter :: Markup -> Markup
+meter :: forall e. Markup e -> Markup e
 meter = parent "meter"
-nav :: Markup -> Markup
+nav :: forall e. Markup e -> Markup e
 nav = parent "nav"
-noscript :: Markup -> Markup
+noscript :: forall e. Markup e -> Markup e
 noscript = parent "noscript"
-object :: Markup -> Markup
+object :: forall e. Markup e -> Markup e
 object = parent "object"
-ol :: Markup -> Markup
+ol :: forall e. Markup e -> Markup e
 ol = parent "ol"
-optgroup :: Markup -> Markup
+optgroup :: forall e. Markup e -> Markup e
 optgroup = parent "optgroup"
-option :: Markup -> Markup
+option :: forall e. Markup e -> Markup e
 option = parent "option"
-output :: Markup -> Markup
+output :: forall e. Markup e -> Markup e
 output = parent "output"
-p :: Markup -> Markup
+p :: forall e. Markup e -> Markup e
 p = parent "p"
-pre :: Markup -> Markup
+pre :: forall e. Markup e -> Markup e
 pre = parent "pre"
-progress :: Markup -> Markup
+progress :: forall e. Markup e -> Markup e
 progress = parent "progress"
-q :: Markup -> Markup
+q :: forall e. Markup e -> Markup e
 q = parent "q"
-rp :: Markup -> Markup
+rp :: forall e. Markup e -> Markup e
 rp = parent "rp"
-rt :: Markup -> Markup
+rt :: forall e. Markup e -> Markup e
 rt = parent "rt"
-ruby :: Markup -> Markup
+ruby :: forall e. Markup e -> Markup e
 ruby = parent "ruby"
-samp :: Markup -> Markup
+samp :: forall e. Markup e -> Markup e
 samp = parent "samp"
-script :: Markup -> Markup
+script :: forall e. Markup e -> Markup e
 script = parent "script"
-section :: Markup -> Markup
+section :: forall e. Markup e -> Markup e
 section = parent "section"
-select :: Markup -> Markup
+select :: forall e. Markup e -> Markup e
 select = parent "select"
-small :: Markup -> Markup
+small :: forall e. Markup e -> Markup e
 small = parent "small"
-span :: Markup -> Markup
+span :: forall e. Markup e -> Markup e
 span = parent "span"
-strong :: Markup -> Markup
+strong :: forall e. Markup e -> Markup e
 strong = parent "strong"
-style :: Markup -> Markup
+style :: forall e. Markup e -> Markup e
 style = parent "style"
-sub :: Markup -> Markup
+sub :: forall e. Markup e -> Markup e
 sub = parent "sub"
-summary :: Markup -> Markup
+summary :: forall e. Markup e -> Markup e
 summary = parent "summary"
-sup :: Markup -> Markup
+sup :: forall e. Markup e -> Markup e
 sup = parent "sup"
-table :: Markup -> Markup
+table :: forall e. Markup e -> Markup e
 table = parent "table"
-tbody :: Markup -> Markup
+tbody :: forall e. Markup e -> Markup e
 tbody = parent "tbody"
-td :: Markup -> Markup
+td :: forall e. Markup e -> Markup e
 td = parent "td"
-textarea :: Markup -> Markup
+textarea :: forall e. Markup e -> Markup e
 textarea = parent "textarea"
-tfoot :: Markup -> Markup
+tfoot :: forall e. Markup e -> Markup e
 tfoot = parent "tfoot"
-th :: Markup -> Markup
+th :: forall e. Markup e -> Markup e
 th = parent "th"
-thead :: Markup -> Markup
+thead :: forall e. Markup e -> Markup e
 thead = parent "thead"
-time :: Markup -> Markup
+time :: forall e. Markup e -> Markup e
 time = parent "time"
-title :: Markup -> Markup
+title :: forall e. Markup e -> Markup e
 title = parent "title"
-tr :: Markup -> Markup
+tr :: forall e. Markup e -> Markup e
 tr = parent "tr"
-ul :: Markup -> Markup
+ul :: forall e. Markup e -> Markup e
 ul = parent "ul"
-var :: Markup -> Markup
+var :: forall e. Markup e -> Markup e
 var = parent "var"
-video :: Markup -> Markup
+video :: forall e. Markup e -> Markup e
 video = parent "video"
-area :: Markup
+area :: forall e. Markup e
 area = leaf "area"
-base :: Markup
+base :: forall e. Markup e
 base = leaf "base"
-br :: Markup
+br :: forall e. Markup e
 br = leaf "br"
-col :: Markup
+col :: forall e. Markup e
 col = leaf "col"
-embed :: Markup
+embed :: forall e. Markup e
 embed = leaf "embed"
-hr :: Markup
+hr :: forall e. Markup e
 hr = leaf "hr"
-img :: Markup
+img :: forall e. Markup e
 img = leaf "img"
-input :: Markup
+input :: forall e. Markup e
 input = leaf "input"
-keygen :: Markup
+keygen :: forall e. Markup e
 keygen = leaf "keygen"
-link :: Markup
+link :: forall e. Markup e
 link = leaf "link"
-menuitem :: Markup
+menuitem :: forall e. Markup e
 menuitem = leaf "menuitem"
-meta :: Markup
+meta :: forall e. Markup e
 meta = leaf "meta"
-param :: Markup
+param :: forall e. Markup e
 param = leaf "param"
-source :: Markup
+source :: forall e. Markup e
 source = leaf "source"
-track :: Markup
+track :: forall e. Markup e
 track = leaf "track"
-wbr :: Markup
+wbr :: forall e. Markup e
 wbr = leaf "wbr"

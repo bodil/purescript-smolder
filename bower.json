@@ -19,13 +19,13 @@
     "output"
   ],
   "dependencies": {
-    "purescript-monoid": "^1.0.0",
-    "purescript-maps": "^1.0.0",
-    "purescript-strings": "^1.0.0",
-    "purescript-catenable-lists": "^1.1.0",
-    "purescript-tuples": "^1.0.0"
+    "purescript-monoid": "^2.0.0",
+    "purescript-maps": "^2.0.0",
+    "purescript-strings": "^2.0.1",
+    "purescript-catenable-lists": "^3.0.0",
+    "purescript-tuples": "^3.0.0"
   },
   "devDependencies": {
-    "purescript-console": "^1.0.0"
+    "purescript-console": "^2.0.0"
   }
 }
