@@ -1,16 +1,14 @@
 module Test.Main where
 
 import Prelude
-
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
-
 import Text.Smolder.HTML (html, head, meta, link, title, body, h1, p)
 import Text.Smolder.HTML.Attributes (lang, charset, httpEquiv, content, name, rel, href)
-import Text.Smolder.Markup (Markup, text, (!))
+import Text.Smolder.Markup (on, (#!), Markup, text, (!))
 import Text.Smolder.Renderer.String (render)
 
-doc :: forall e. Markup e
+doc :: forall a e. Markup (a -> Eff (console :: CONSOLE | e) Unit)
 doc = html ! lang "en" $ do
   head $ do
     meta ! charset "utf-8"
@@ -20,7 +18,7 @@ doc = html ! lang "en" $ do
     meta ! name "viewport" ! content "width=device-width"
     link ! rel "stylesheet" ! href "css/screen.css"
   body $ do
-    h1 $ text "OMG HAI LOL"
+    h1 #! on "click" (\_ -> log "click") $ text "OMG HAI LOL"
     p $ text "This is clearly the best HTML DSL ever invented.<script>alert(\"lol pwned\");</script>"
 
 main :: Eff (console :: CONSOLE) Unit
