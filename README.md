@@ -2,7 +2,7 @@
 
 A simple combinator library for generating HTML in PureScript, heavily inspired by Haskell's [BlazeHtml](http://jaspervdj.be/blaze/).
 
-- [Module Documentation](docs/Text/Smolder/)
+- [Module Documentation](https://pursuit.purescript.org/packages/purescript-smolder/)
 - [Example](test/Main.purs)
 
 ## Licence
