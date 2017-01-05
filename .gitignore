@@ -3,3 +3,4 @@
 /output/
 /.tern-port
 *.tix
+/.psc-package
