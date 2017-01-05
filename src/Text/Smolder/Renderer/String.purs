@@ -36,12 +36,12 @@ renderNode :: forall e. Node e -> String
 renderNode (Element n a e c) = "<" <> n <> showAttrs a <> showTail c
   where
   showTail Nil = "/>"
-  showTail c = ">" <> fold (map renderNode c) <> "</" <> n <> ">"
+  showTail c' = ">" <> fold (map renderNode c') <> "</" <> n <> ">"
 
-  showAttrs a = fold $ map pair (keys a)
+  showAttrs a' = fold $ map pair (keys a')
     where
     pair :: String -> String
-    pair k = " " <> k <> foldMap (\v -> "=\"" <> escape v <> "\"") (lookup k a)
+    pair k = " " <> k <> foldMap (\v -> "=\"" <> escape v <> "\"") (lookup k a')
 renderNode (Text s) = escape s
 
 -- | Render markup as an HTML string.
