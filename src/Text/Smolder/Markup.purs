@@ -21,6 +21,7 @@ module Text.Smolder.Markup
   ) where
 
 import Prelude
+import Data.Bifunctor (class Bifunctor)
 import Data.CatList (CatList)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.Monoid (class Monoid, mempty)
@@ -28,6 +29,9 @@ import Data.Monoid (class Monoid, mempty)
 data Attr = Attr String String
 
 data EventHandler e = EventHandler String e
+
+instance eventHandlerFunctor :: Functor EventHandler where
+  map f (EventHandler s x) = EventHandler s (f x)
 
 data MarkupM e a
   = Element String (Maybe (Markup e)) (CatList Attr) (CatList (EventHandler e)) (MarkupM e a)
@@ -55,6 +59,15 @@ instance functorMarkupM :: Functor (MarkupM e) where
   map f (Element el kids attrs events rest) = Element el kids attrs events (map f rest)
   map f (Content s rest) = Content s (map f rest)
   map f (Return a) = Return (f a)
+
+instance bifunctorMarkupM :: Bifunctor MarkupM where
+  bimap f g = lmap' f >>> map g
+    where
+      lmap' :: forall e e' a. (e -> e') -> MarkupM e a -> MarkupM e' a
+      lmap' h (Element el kids attrs events rest) =
+        Element el (map (lmap' h) kids) attrs (map (map h) events) (lmap' h rest)
+      lmap' h (Content s rest) = Content s (lmap' h rest)
+      lmap' h (Return x) = Return x
 
 instance applyMarkupM :: Apply (MarkupM e) where
   apply = ap
