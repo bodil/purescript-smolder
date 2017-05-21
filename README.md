@@ -3,7 +3,64 @@
 A simple combinator library for generating HTML in PureScript, heavily inspired by Haskell's [BlazeHtml](http://jaspervdj.be/blaze/).
 
 - [Module Documentation](https://pursuit.purescript.org/packages/purescript-smolder/)
-- [Example](test/Main.purs)
+
+## Usage
+
+Write HTML elements as functions, with the `!` combinator to add attributes, and do notation to add child elements:
+
+```purescript
+doc = html ! lang "en" $ do
+  h1 $ text "My HTML Document"
+  p $ do
+    text "This is my HTML document. It is "
+    em $ text "very"
+    text " nice. "
+    a ! href "more.html" $ text "There is more."
+```
+
+You can render lists of items inside the do notation using `traverse_` or `for_`:
+
+```purescript
+import Data.Foldable (for_, traverse_)
+
+items = ["fear", "surprise", "ruthless efficiency"]
+
+item i = li $ text i
+
+bulletList = ul $ do
+  for_ items item
+  -- or traverse_ item items
+```
+
+Use the `#!` combinator to attach event handlers:
+
+```purescript
+import Control.Monad.Eff.Console (log)
+
+doc = div ! className "not-a-form" $ do
+  button #! on "click" (\event → log "boom!") $ text "boom"
+```
+
+You can render the markup to a string:
+
+```purescript
+import Text.Smolder.Renderer.String (render)
+
+doc = html ! lang "en" $ do
+  body $ do
+    h1 $ text "Hello Joe"
+
+docAsString = render doc
+-- "<html lang=\"en\"><body><h1>Hello Joe</h1></body></html>"
+```
+
+There are other renderers available, such as [a renderer for DOM nodes](https://pursuit.purescript.org/packages/purescript-smolder-dom).
+
+### Types
+
+The type of the markup is `Markup e`, where the `e` is the type of the event handler, which is only important when you want to render your markup. For rendering to the DOM, this would have to be `EventListener (dom :: DOM | eff)`. The string renderer accepts any type for `e`, as it ignores event handlers altogether.
+
+`Markup e` is a type alias for `MarkupM e Unit`, and it's implemented as a free monad behind the scenes, but you don't need to worry about that at all. Unless you're writing your own renderer, you should just use `Markup e` in your own code.
 
 ## Licence
 
