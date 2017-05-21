@@ -1,17 +1,15 @@
 module Text.Smolder.Renderer.String
   ( render
-  , renderNode
   ) where
 
 import Prelude
-import Data.Foldable (fold, foldMap)
-import Data.List (List(Nil))
+import Data.CatList (CatList)
+import Data.Foldable (fold)
 import Data.Maybe (maybe)
-import Data.StrMap (fromFoldable, keys, lookup, StrMap)
-import Data.String (Pattern(Pattern), split, joinWith)
+import Data.StrMap (StrMap, fromFoldable, lookup)
+import Data.String (Pattern(Pattern), joinWith, length, split)
 import Data.Tuple.Nested ((/\))
-import Text.Smolder.Markup (MarkupM)
-import Text.Smolder.Renderer.Util (Node(Text, Element), renderMarkup)
+import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
 
 escapeMap :: StrMap String
 escapeMap = fromFoldable
@@ -29,21 +27,17 @@ escapeChar s = maybe s id $ lookup s escapeMap
 escape :: String -> String
 escape s = joinWith "" (escapeChar <$> (split (Pattern "") s))
 
--- | Render a node as an HTML string.
--- |
--- | TODO: attr values and text content must be properly escaped.
-renderNode :: forall e. Node e -> String
-renderNode (Element n a e c) = "<" <> n <> showAttrs a <> showTail c
-  where
-  showTail Nil = "/>"
-  showTail c' = ">" <> fold (map renderNode c') <> "</" <> n <> ">"
-
-  showAttrs a' = fold $ map pair (keys a')
-    where
-    pair :: String -> String
-    pair k = " " <> k <> foldMap (\v -> "=\"" <> escape v <> "\"") (lookup k a')
-renderNode (Text s) = escape s
+showAttrs :: CatList Attr → String
+showAttrs = map showAttr >>> fold
+  where showAttr (Attr key value) = " " <> key <> "=\"" <> escape value <> "\""
 
 -- | Render markup as an HTML string.
-render :: forall e a. MarkupM e a -> String
-render = fold <<< map renderNode <<< renderMarkup
+render :: ∀ e. Markup e → String
+render (Element name children attrs _ rest) =
+  let c = render children
+  in "<" <> name <> showAttrs attrs <>
+     (if length c > 0
+      then ">" <> c <> "</" <> name <> ">"
+      else "/>") <> render rest
+render (Content text rest) = escape text <> render rest
+render (Return _) = ""
