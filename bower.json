@@ -26,6 +26,6 @@
     "purescript-tuples": "^4.0.0"
   },
   "devDependencies": {
-    "purescript-console": "^3.0.0"
+    "purescript-test-unit": "^11.0.0"
   }
 }
