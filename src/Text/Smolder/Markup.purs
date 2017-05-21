@@ -22,7 +22,6 @@ module Text.Smolder.Markup
 
 import Prelude
 import Data.CatList (CatList)
-import Data.Maybe (Maybe(Just, Nothing))
 import Data.Monoid (class Monoid, mempty)
 
 data Attr = Attr String String
@@ -30,17 +29,17 @@ data Attr = Attr String String
 data EventHandler e = EventHandler String e
 
 data MarkupM e a
-  = Element String (Maybe (Markup e)) (CatList Attr) (CatList (EventHandler e)) (MarkupM e a)
+  = Element String (Markup e) (CatList Attr) (CatList (EventHandler e)) (MarkupM e a)
   | Content String (MarkupM e a)
   | Return a
 
 type Markup e = MarkupM e Unit
 
 parent :: forall e. String -> Markup e -> Markup e
-parent el kids = Element el (Just kids) mempty mempty (Return unit)
+parent el kids = Element el kids mempty mempty (Return unit)
 
 leaf :: forall e. String -> Markup e
-leaf el = Element el Nothing mempty mempty (Return unit)
+leaf el = Element el (Return unit) mempty mempty (Return unit)
 
 text :: forall e. String -> Markup e
 text s = Content s (Return unit)
