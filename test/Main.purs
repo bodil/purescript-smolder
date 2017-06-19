@@ -1,5 +1,7 @@
 module Test.Main where
 
+import Test.SVG as SvgTest
+
 import Prelude
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
@@ -31,5 +33,6 @@ expected = """<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-U
 
 main :: Eff (console :: CONSOLE, avar :: AVAR, testOutput :: TESTOUTPUT) Unit
 main = runTest do
-  test "render to string" do
+  test "render HTML to string" do
     equal expected $ render doc
+  SvgTest.tests
