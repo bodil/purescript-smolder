@@ -23,7 +23,9 @@
     "purescript-maps": "^3.0.0",
     "purescript-strings": "^3.0.0",
     "purescript-catenable-lists": "^4.0.0",
-    "purescript-tuples": "^4.0.0"
+    "purescript-tuples": "^4.0.0",
+    "purescript-free": "^4.1.0",
+    "purescript-transformers": "^3.4.0"
   },
   "devDependencies": {
     "purescript-test-unit": "^11.0.0"

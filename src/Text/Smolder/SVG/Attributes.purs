@@ -2,7 +2,7 @@ module Text.Smolder.SVG.Attributes where
 
 import Text.Smolder.Markup (Attribute, attribute)
 
--- TODO: these should be categorized so only the elements for 
+-- TODO: these should be categorized so only the elements for
 -- which these are valid can use them
 accentHeight :: String -> Attribute
 accentHeight = attribute "accent-height"
@@ -522,4 +522,3 @@ z :: String -> Attribute
 z = attribute "z"
 zoomAndPan :: String -> Attribute
 zoomAndPan = attribute "zoomAndPan"
-
