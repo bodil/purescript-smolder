@@ -32,6 +32,8 @@ bulletList = ul $ do
   -- or traverse_ item items
 ```
 
+(Note that the `Data.Foldable` versions of `traverse_` and `for_` can blow the stack if you have a lot of items (just short of 10k items will do it), but because `Markup` has a `MonadRec` instance, you can use the implementations from [purescript-safely](https://pursuit.purescript.org/packages/purescript-safely/) if you're worried about this.)
+
 Use the `#!` combinator to attach event handlers:
 
 ```purescript
@@ -60,7 +62,7 @@ There are other renderers available, such as [a renderer for DOM nodes](https://
 
 The type of the markup is `Markup e`, where the `e` is the type of the event handler, which is only important when you want to render your markup. For rendering to the DOM, this would have to be `EventListener (dom :: DOM | eff)`. The string renderer accepts any type for `e`, as it ignores event handlers altogether.
 
-`Markup e` is a type alias for `MarkupM e Unit`, and it's implemented as a free monad behind the scenes, but you don't need to worry about that at all. Unless you're writing your own renderer, you should just use `Markup e` in your own code.
+`Markup e` is a type alias for `Free (MarkupM e) Unit`, a free monad over markup nodes, but you don't need to worry about free monads at all. Unless you're writing your own renderer, you should just use `Markup e` in your own code.
 
 ## Licence
 
