@@ -3,6 +3,7 @@ module Text.Smolder.Markup
   , Markup
   , Attr(..)
   , EventHandler(..)
+  , mapEvent
   , parent
   , leaf
   , text
@@ -23,6 +24,7 @@ module Text.Smolder.Markup
 import Prelude
 
 import Control.Monad.Free (Free, foldFree, hoistFree, liftF)
+import Data.Bifunctor (class Bifunctor, lmap)
 import Data.CatList (CatList)
 import Data.Monoid (class Monoid, mempty)
 
@@ -45,6 +47,16 @@ data MarkupM e a
 
 -- | The type of a sequence of markup nodes.
 type Markup e = Free (MarkupM e) Unit
+
+instance bifunctorMarkupM :: Bifunctor MarkupM where
+  bimap l r (Empty a) = Empty (r a)
+  bimap l r (Content t a) = Content t (r a)
+  bimap l r (Element el kids attrs events a) =
+    Element el (mapEvent l kids) attrs (map l <$> events) (r a)
+
+-- | Change the event type of a markup sequence.
+mapEvent :: ∀ l r. (l → r) → Free (MarkupM l) ~> Free (MarkupM r)
+mapEvent f fm = foldFree (\m → liftF $ lmap f m) fm
 
 -- | Create a named parent node with a sequence of children.
 parent :: ∀ e. String → Markup e → Markup e
