@@ -21,9 +21,10 @@ module Text.Smolder.Markup
   ) where
 
 import Prelude
+
+import Control.Monad.Free (Free, foldFree, hoistFree, liftF)
 import Data.CatList (CatList)
 import Data.Monoid (class Monoid, mempty)
-import Control.Monad.Free (Free, liftF, hoistFree)
 
 data Attr = Attr String String
 
@@ -32,20 +33,29 @@ data EventHandler e = EventHandler String e
 instance functorEventHandler ∷ Functor EventHandler where
   map f (EventHandler s e) = EventHandler s (f e)
 
+-- | Representation of a markup node.
+-- |
+-- | This is either an `Element`, which maps to a DOM element,
+-- | a `Content` node, which maps to a DOM text node, or `Empty`,
+-- | which maps to an empty `NodeList`.
 data MarkupM e a
   = Element String (Markup e) (CatList Attr) (CatList (EventHandler e)) a
   | Content String a
   | Empty a
 
+-- | The type of a sequence of markup nodes.
 type Markup e = Free (MarkupM e) Unit
 
-parent :: forall e. String -> Markup e -> Markup e
+-- | Create a named parent node with a sequence of children.
+parent :: ∀ e. String → Markup e → Markup e
 parent el kids = liftF $ Element el kids mempty mempty unit
 
-leaf :: forall e. String -> Markup e
+-- | Create a named leaf node.
+leaf :: ∀ e. String → Markup e
 leaf el = liftF $ Element el (liftF $ Empty unit) mempty mempty unit
 
-text :: forall e. String -> Markup e
+-- | Create a text node.
+text :: ∀ e. String → Markup e
 text s = liftF $ Content s unit
 
 data Attribute = Attribute (CatList Attr)
@@ -56,15 +66,18 @@ instance semigroupAttribute :: Semigroup Attribute where
 instance monoidAttribute :: Monoid Attribute where
   mempty = Attribute mempty
 
-attribute :: String -> String -> Attribute
+-- | Create an attribute.
+attribute :: String → String → Attribute
 attribute key value = Attribute (pure $ Attr key value)
 
 class Attributable a where
-  with :: a -> Attribute -> a
+  -- | Add an attribute to a markup node.
+  with :: a → Attribute → a
 
 infixl 4 with as !
 
-optionalWith :: forall h. (Attributable h) => h -> Boolean -> Attribute -> h
+-- | Add an attribute to a markup node only if the supplied boolean value is true.
+optionalWith :: ∀ h. (Attributable h) ⇒ h → Boolean → Attribute → h
 optionalWith h c a = if c then h ! a else h
 
 infixl 4 optionalWith as !?
@@ -76,17 +89,19 @@ instance attributableMarkup :: Attributable (Free (MarkupM e) Unit) where
       withF (Element el kids attrs events rest) = Element el kids (attrs <> attr) events rest
       withF el = el
 
-instance attributableMarkupF :: Attributable (Free (MarkupM e) Unit -> Free (MarkupM e) Unit) where
+instance attributableMarkupF :: Attributable (Free (MarkupM e) Unit → Free (MarkupM e) Unit) where
   with k xs m = k m `with` xs
 
 data EventHandlers e = EventHandlers (CatList (EventHandler e))
 
-class Eventable e a | a -> e where
-  withEvent :: a -> EventHandlers e -> a
+class Eventable e a | a → e where
+  -- | Add an event handler to a markup node.
+  withEvent :: a → EventHandlers e → a
 
 infixl 4 withEvent as #!
 
-on :: forall e. String -> e -> EventHandlers e
+-- | Construct an event handler for a named event.
+on :: ∀ e. String → e → EventHandlers e
 on name handler = EventHandlers (pure $ EventHandler name handler)
 
 instance eventableMarkup :: Eventable e (Free (MarkupM e) Unit) where
@@ -97,5 +112,5 @@ instance eventableMarkup :: Eventable e (Free (MarkupM e) Unit) where
         Element el kids attrs (events <> es) rest
       withEventF xs = xs
 
-instance eventableMarkupMF :: Eventable e (Free (MarkupM e) Unit -> Free (MarkupM e) Unit) where
+instance eventableMarkupMF :: Eventable e (Free (MarkupM e) Unit → Free (MarkupM e) Unit) where
   withEvent k xs m = k m `withEvent` xs
