@@ -39,7 +39,7 @@ renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs attrs <>
-          (if length c > 0
+          (if length c > 0 || name == "script"
            then ">" <> c <> "</" <> name <> ">"
            else "/>")
   in state \s → Tuple rest $ append s b
