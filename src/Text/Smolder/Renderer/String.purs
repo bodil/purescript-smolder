@@ -30,7 +30,6 @@ escapeMIMEMap :: StrMap String
 escapeMIMEMap = fromFoldable
   [ "&" /\ "&amp;"
   , "<" /\ "&lt;"
-  , ">" /\ "&gt;"
   , "\"" /\ "&quot;"
   , "'" /\ "&#39;"
   ]

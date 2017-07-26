@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
+import Debug.Trace (spy)
 import Test.SVG as SvgTest
 import Test.Unit (test)
 import Test.Unit.Assert (equal)
