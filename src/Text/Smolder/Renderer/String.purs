@@ -13,6 +13,7 @@ import Data.StrMap (StrMap, fromFoldable, lookup)
 import Data.String (Pattern(Pattern), joinWith, length, split)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
+import Global (encodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
 
 escapeMap :: StrMap String
@@ -25,45 +26,48 @@ escapeMap = fromFoldable
   , "/" /\ "&#x2F;"
   ]
 
-escapeURLMap :: StrMap String
-escapeURLMap = fromFoldable
-  [ "<" /\ "%3C"
-  , ">" /\ "%3E"
-  , "\"" /\ "5%C"
-  , " " /\ "%20"
-  , "%" /\ "%25"
-  , "$" /\ "%24"
-  , "\"" /\ "%22"
-  , "`" /\ "%60"
-  , ";" /\ "%3B"
-  , ":" /\ "%3A"
-  , "@" /\ "%40"
-  ]
+escapeChar :: String -> String
+escapeChar s = fromMaybe s $ lookup s escapeMap
 
 escape :: String -> String
 escape s = joinWith "" (escapeChar <$> (split (Pattern "") s))
-  where
-    escapeChar :: String -> String
-    escapeChar c = fromMaybe c $ lookup s escapeMap
 
-escapeURL :: String -> String
-escapeURL s = joinWith "" $ escapeChar <$> (split (Pattern "") s)
-  where
-    escapeChar :: String -> String
-    escapeChar c = fromMaybe c $ lookup c escapeURLMap
+-- url attributes according to:
+-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes 
+isURLAttr :: String -> String -> Boolean
+isURLAttr n s
+  | s == "href" && n == "a" = true
+  | s == "href" && n == "area" = true
+  | s == "href" && n == "base" = true
+  | s == "href" && n == "link" = true
+  | s == "src" && n == "audio" = true
+  | s == "src" && n == "embed" = true
+  | s == "src" && n == "iframe" = true
+  | s == "src" && n == "img" = true
+  | s == "src" && n == "input" = true
+  | s == "src" && n == "script" = true
+  | s == "src" && n == "source" = true
+  | s == "src" && n == "track" = true
+  | s == "src" && n == "video" = true
+  | s == "code" && n == "applet" = true
+  | s == "codebase" && n == "applet" = true
+  | s == "data" && n == "object" = true
+  | s == "manifest" && n == "html" = true
+  | s == "poster" && n == "video" = true
+  | otherwise = false
 
-showAttrs :: CatList Attr → String
-showAttrs = map showAttr >>> fold
+showAttrs :: String -> CatList Attr → String
+showAttrs tag = map showAttr >>> fold
   where showAttr (Attr key value) = " "
           <> key
           <> "=\""
-          <> (if key == "src" || key == "href" then escapeURL value else escape value)
+          <> (if isURLAttr tag key then encodeURI value else escape value)
           <> "\""
 
 renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element name children attrs _ rest) =
   let c = render children
-      b = "<" <> name <> showAttrs attrs <>
+      b = "<" <> name <> showAttrs name attrs <>
           (if length c > 0
            then ">" <> c <> "</" <> name <> ">"
            else "/>")
