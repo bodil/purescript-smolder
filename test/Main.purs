@@ -10,8 +10,8 @@ import Test.Unit (test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Main (runTest)
-import Text.Smolder.HTML (body, h1, head, html, link, meta, p, script, title)
-import Text.Smolder.HTML.Attributes (charset, content, href, httpEquiv, lang, name, rel, src)
+import Text.Smolder.HTML (body, h1, head, html, img, link, meta, p, script, style, title)
+import Text.Smolder.HTML.Attributes (charset, content, href, httpEquiv, lang, name, rel, src, type')
 import Text.Smolder.Markup (Markup, on, text, (!), (#!))
 import Text.Smolder.Renderer.String (render)
 
@@ -25,12 +25,14 @@ doc = html ! lang "en" $ do
     meta ! name "viewport" ! content "width=device-width"
     link ! rel "stylesheet" ! href "css/screen.css"
     script ! src "index.js" $ text ""
+    style ! type' "text/css" $ text " "
   body $ do
     h1 #! on "click" (\_ -> log "click") $ text "OMG HAI LOL"
+    img ! src "images/img.png?id=123&a=true"
     p $ text "This is clearly the best HTML DSL ever invented.<script>alert(\"lol pwned\");</script>"
 
 expected :: String
-expected = """<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><title>OMG HAI LOL</title><meta name="description" content="YES OMG HAI LOL&quot;&gt;&lt;script&gt;alert(&quot;lol pwned&quot;);&lt;&#x2F;script&gt;"/><meta name="viewport" content="width=device-width"/><link rel="stylesheet" href="css&#x2F;screen.css"/><script src="index.js"></script></head><body><h1>OMG HAI LOL</h1><p>This is clearly the best HTML DSL ever invented.&lt;script&gt;alert(&quot;lol pwned&quot;);&lt;&#x2F;script&gt;</p></body></html>"""
+expected = """<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><title>OMG HAI LOL</title><meta name="description" content="YES OMG HAI LOL&quot;&gt;&lt;script&gt;alert(&quot;lol pwned&quot;);&lt;&#x2F;script&gt;"/><meta name="viewport" content="width=device-width"/><link rel="stylesheet" href="css/screen.css"/><script src="index.js"></script><style type="text/css"> </style></head><body><h1>OMG HAI LOL</h1><img src="images/img.png?id=123&a=true"/><p>This is clearly the best HTML DSL ever invented.&lt;script&gt;alert(&quot;lol pwned&quot;);&lt;&#x2F;script&gt;</p></body></html>"""
 
 main :: Eff (console :: CONSOLE, avar :: AVAR, testOutput :: TESTOUTPUT) Unit
 main = runTest do
