@@ -70,6 +70,10 @@ leaf el = liftF $ Element el (liftF $ Empty unit) mempty mempty unit
 text :: ∀ e. String → Markup e
 text s = liftF $ Content s unit
 
+-- | Used for empty nodes (without text or children)
+empty :: ∀ e. Markup e
+empty = liftF $ Empty unit
+
 data Attribute = Attribute (CatList Attr)
 
 instance semigroupAttribute :: Semigroup Attribute where
