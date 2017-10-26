@@ -7,6 +7,7 @@ module Text.Smolder.Markup
   , parent
   , leaf
   , text
+  , empty
   , Attribute()
   , class Attributable
   , with
