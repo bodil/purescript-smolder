@@ -41,10 +41,11 @@ isMIMEAttr tag attr
   | attr == "type" && tag == "script" = true
   | attr == "type" && tag == "source" = true
   | attr == "type" && tag == "style" = true
+  | attr == "type" && tag == "link" = true
   | otherwise = false
 
 -- url attributes according to:
--- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes 
+-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
 isURLAttr :: String -> String -> Boolean
 isURLAttr tag attr
   | attr == "href" && tag == "a" = true
