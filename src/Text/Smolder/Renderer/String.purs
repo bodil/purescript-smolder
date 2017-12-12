@@ -88,7 +88,7 @@ showAttrs tag = map showAttr >>> fold
           <> "\""
 
 renderItem :: ∀ e. MarkupM e ~> State String
-renderItem (Element name children attrs _ rest) =
+renderItem (Element _ name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs name attrs <>
           (if length c > 0
