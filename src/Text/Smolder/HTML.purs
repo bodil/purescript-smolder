@@ -1,8 +1,15 @@
 module Text.Smolder.HTML where
 
-import Text.Smolder.Markup (Markup, parent, leaf)
+import Text.Smolder.Markup (Markup, NS(..))
+import Text.Smolder.Markup (parent, leaf) as M
 
 type Html e = Markup e
+
+parent :: ∀ e. String → Markup e → Markup e
+parent = M.parent HTMLns
+
+leaf :: ∀ e. String → Markup e
+leaf = M.leaf HTMLns
 
 a :: forall e. Markup e -> Markup e
 a = parent "a"
