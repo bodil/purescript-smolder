@@ -1,6 +1,6 @@
 {
     "name": "purescript-smolder",
-    "set": "psc-0.10.4",
+    "set": "psc-0.11.7",
     "source": "https://github.com/purescript/package-sets.git",
     "depends": [
         "tuples",
@@ -8,6 +8,7 @@
         "strings",
         "maps",
         "monoid",
+        "test-unit",
         "prelude"
     ]
 }
