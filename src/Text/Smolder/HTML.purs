@@ -18,6 +18,8 @@ audio :: forall e. Markup e -> Markup e
 audio = parent "audio"
 b :: forall e. Markup e -> Markup e
 b = parent "b"
+bdi :: forall e. Markup e -> Markup e
+bdi = parent "bdi"
 bdo :: forall e. Markup e -> Markup e
 bdo = parent "bdo"
 blockquote :: forall e. Markup e -> Markup e
@@ -38,6 +40,8 @@ colgroup :: forall e. Markup e -> Markup e
 colgroup = parent "colgroup"
 command :: forall e. Markup e -> Markup e
 command = parent "command"
+data' :: forall e. Markup e -> Markup e
+data' = parent "data"
 datalist :: forall e. Markup e -> Markup e
 datalist = parent "datalist"
 dd :: forall e. Markup e -> Markup e
@@ -46,6 +50,8 @@ del :: forall e. Markup e -> Markup e
 del = parent "del"
 details :: forall e. Markup e -> Markup e
 details = parent "details"
+dialog :: forall e. Markup e -> Markup e
+dialog = parent "dialog"
 dfn :: forall e. Markup e -> Markup e
 dfn = parent "dfn"
 div :: forall e. Markup e -> Markup e
@@ -100,6 +106,8 @@ legend :: forall e. Markup e -> Markup e
 legend = parent "legend"
 li :: forall e. Markup e -> Markup e
 li = parent "li"
+main ::forall e. Markup e -> Markup e
+main = parent "main"
 map :: forall e. Markup e -> Markup e
 map = parent "map"
 mark :: forall e. Markup e -> Markup e
@@ -124,6 +132,8 @@ output :: forall e. Markup e -> Markup e
 output = parent "output"
 p :: forall e. Markup e -> Markup e
 p = parent "p"
+picture :: forall e. Markup e -> Markup e
+picture = parent "picture"
 pre :: forall e. Markup e -> Markup e
 pre = parent "pre"
 progress :: forall e. Markup e -> Markup e
@@ -134,8 +144,12 @@ rp :: forall e. Markup e -> Markup e
 rp = parent "rp"
 rt :: forall e. Markup e -> Markup e
 rt = parent "rt"
+rtc :: forall e. Markup e -> Markup e
+rtc = parent "rtc"
 ruby :: forall e. Markup e -> Markup e
 ruby = parent "ruby"
+s :: forall e. Markup e -> Markup e
+s = parent "s"
 samp :: forall e. Markup e -> Markup e
 samp = parent "samp"
 script :: forall e. Markup e -> Markup e
@@ -158,12 +172,16 @@ summary :: forall e. Markup e -> Markup e
 summary = parent "summary"
 sup :: forall e. Markup e -> Markup e
 sup = parent "sup"
+slot :: forall e. Markup e -> Markup e
+slot = parent "slot"
 table :: forall e. Markup e -> Markup e
 table = parent "table"
 tbody :: forall e. Markup e -> Markup e
 tbody = parent "tbody"
 td :: forall e. Markup e -> Markup e
 td = parent "td"
+template :: forall e. Markup e -> Markup e
+template = parent "template"
 textarea :: forall e. Markup e -> Markup e
 textarea = parent "textarea"
 tfoot :: forall e. Markup e -> Markup e
@@ -178,6 +196,8 @@ title :: forall e. Markup e -> Markup e
 title = parent "title"
 tr :: forall e. Markup e -> Markup e
 tr = parent "tr"
+u :: forall e. Markup e -> Markup e
+u = parent "u"
 ul :: forall e. Markup e -> Markup e
 ul = parent "ul"
 var :: forall e. Markup e -> Markup e
