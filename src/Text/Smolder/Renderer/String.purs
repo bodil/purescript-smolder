@@ -9,14 +9,14 @@ import Control.Monad.State (execState, State, state)
 import Data.CatList (CatList)
 import Data.Foldable (fold)
 import Data.Maybe (fromMaybe)
-import Data.StrMap (StrMap, fromFoldable, lookup)
+import Data.Map (Map, fromFoldable, lookup)
 import Data.String (Pattern(Pattern), joinWith, length, split)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
-import Global (encodeURI)
+import Global.Unsafe (unsafeEncodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
 
-escapeMap :: StrMap String
+escapeMap :: Map String String
 escapeMap = fromFoldable
   [ "&" /\ "&amp;"
   , "<" /\ "&lt;"
@@ -26,7 +26,7 @@ escapeMap = fromFoldable
   , "/" /\ "&#x2F;"
   ]
 
-escapeMIMEMap :: StrMap String
+escapeMIMEMap :: Map String String
 escapeMIMEMap = fromFoldable
   [ "&" /\ "&amp;"
   , "<" /\ "&lt;"
@@ -44,7 +44,7 @@ isMIMEAttr tag attr
   | otherwise = false
 
 -- url attributes according to:
--- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes 
+-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
 isURLAttr :: String -> String -> Boolean
 isURLAttr tag attr
   | attr == "href" && tag == "a" = true
@@ -67,7 +67,7 @@ isURLAttr tag attr
   | attr == "poster" && tag == "video" = true
   | otherwise = false
 
-escape :: StrMap String -> String -> String
+escape :: Map String String -> String -> String
 escape m s = joinWith "" (escapeChar <$> (split (Pattern "") s))
   where
     escapeChar :: String -> String
@@ -75,7 +75,7 @@ escape m s = joinWith "" (escapeChar <$> (split (Pattern "") s))
 
 escapeAttrValue :: String -> String -> String -> String
 escapeAttrValue tag key value
-  | isURLAttr tag key   = encodeURI value
+  | isURLAttr tag key   = unsafeEncodeURI value
   | isMIMEAttr tag key  = escape escapeMIMEMap value
   | otherwise           = escape escapeMap value
 

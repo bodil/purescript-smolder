@@ -27,7 +27,6 @@ import Prelude
 import Control.Monad.Free (Free, foldFree, hoistFree, liftF)
 import Data.Bifunctor (class Bifunctor, lmap)
 import Data.CatList (CatList)
-import Data.Monoid (class Monoid, mempty)
 
 data Attr = Attr String String
 
