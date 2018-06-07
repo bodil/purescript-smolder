@@ -37,7 +37,7 @@ bulletList = ul $ do
 Use the `#!` combinator to attach event handlers:
 
 ```purescript
-import Control.Monad.Eff.Console (log)
+import Effect.Class.Console (log)
 
 doc = div ! className "not-a-form" $ do
   button #! on "click" (\event → log "boom!") $ text "boom"
