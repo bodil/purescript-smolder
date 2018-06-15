@@ -18,17 +18,16 @@
     "output"
   ],
   "dependencies": {
-    "purescript-monoid": "^3.0.0",
-    "purescript-maps": "^3.0.0",
-    "purescript-strings": "^3.0.0",
-    "purescript-catenable-lists": "^4.0.0",
-    "purescript-tuples": "^4.0.0",
-    "purescript-free": "^4.1.0",
-    "purescript-transformers": "^3.4.0",
-    "purescript-bifunctors": "^3.0.0",
-    "purescript-globals": "^3.0.0"
+    "purescript-bifunctors": "^4.0.0",
+    "purescript-catenable-lists": "^5.0.0",
+    "purescript-free": "^5.0.0",
+    "purescript-globals": "^4.0.0",
+    "purescript-ordered-collections": "^1.0.0",
+    "purescript-strings": "^4.0.0",
+    "purescript-transformers": "^4.1.0",
+    "purescript-tuples": "^5.0.0"
   },
   "devDependencies": {
-    "purescript-test-unit": "^11.0.0"
+    "purescript-test-unit": "^14.0.0"
   }
 }
