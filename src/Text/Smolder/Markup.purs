@@ -111,7 +111,11 @@ instance attributableMarkup :: Attributable (Free (MarkupM e) Unit) where
 instance attributableMarkupF :: Attributable (Free (MarkupM e) Unit → Free (MarkupM e) Unit) where
   with k xs m = k m `with` xs
 
-data EventHandlers e = EventHandlers (CatList (EventHandler e))
+newtype EventHandlers e = EventHandlers (CatList (EventHandler e))
+
+derive newtype instance semigroupEventHandlers :: Semigroup (EventHandlers e)
+
+derive newtype instance monoidEventHandlers :: Monoid (EventHandlers e)
 
 class Eventable e a | a → e where
   -- | Add an event handler to a markup node.
