@@ -1,12 +1,14 @@
 module Text.Smolder.Markup
   ( MarkupM(..)
   , Markup
+  , NS(..)
   , Attr(..)
   , EventHandler(..)
   , mapEvent
   , parent
   , leaf
   , text
+  , empty
   , Attribute()
   , class Attributable
   , with
@@ -26,7 +28,8 @@ import Prelude
 import Control.Monad.Free (Free, foldFree, hoistFree, liftF)
 import Data.Bifunctor (class Bifunctor, lmap)
 import Data.CatList (CatList)
-import Data.Monoid (class Monoid, mempty)
+
+data NS = HTMLns | SVGns
 
 data Attr = Attr String String
 
@@ -41,7 +44,7 @@ instance functorEventHandler ∷ Functor EventHandler where
 -- | a `Content` node, which maps to a DOM text node, or `Empty`,
 -- | which maps to an empty `NodeList`.
 data MarkupM e a
-  = Element String (Markup e) (CatList Attr) (CatList (EventHandler e)) a
+  = Element NS String (Markup e) (CatList Attr) (CatList (EventHandler e)) a
   | Content String a
   | Empty a
 
@@ -51,24 +54,28 @@ type Markup e = Free (MarkupM e) Unit
 instance bifunctorMarkupM :: Bifunctor MarkupM where
   bimap l r (Empty a) = Empty (r a)
   bimap l r (Content t a) = Content t (r a)
-  bimap l r (Element el kids attrs events a) =
-    Element el (mapEvent l kids) attrs (map l <$> events) (r a)
+  bimap l r (Element ns el kids attrs events a) =
+    Element ns el (mapEvent l kids) attrs (map l <$> events) (r a)
 
 -- | Change the event type of a markup sequence.
 mapEvent :: ∀ l r. (l → r) → Free (MarkupM l) ~> Free (MarkupM r)
 mapEvent f fm = foldFree (\m → liftF $ lmap f m) fm
 
 -- | Create a named parent node with a sequence of children.
-parent :: ∀ e. String → Markup e → Markup e
-parent el kids = liftF $ Element el kids mempty mempty unit
+parent :: ∀ e. NS → String → Markup e → Markup e
+parent ns el kids = liftF $ Element ns el kids mempty mempty unit
 
 -- | Create a named leaf node.
-leaf :: ∀ e. String → Markup e
-leaf el = liftF $ Element el (liftF $ Empty unit) mempty mempty unit
+leaf :: ∀ e. NS → String → Markup e
+leaf ns el = liftF $ Element ns el (liftF $ Empty unit) mempty mempty unit
 
 -- | Create a text node.
 text :: ∀ e. String → Markup e
 text s = liftF $ Content s unit
+
+-- | Used for empty nodes (without text or children)
+empty :: ∀ e. Markup e
+empty = liftF $ Empty unit
 
 data Attribute = Attribute (CatList Attr)
 
@@ -98,7 +105,7 @@ instance attributableMarkup :: Attributable (Free (MarkupM e) Unit) where
   with f (Attribute attr) = hoistFree withF f
     where
       withF :: ∀ a. MarkupM e a → MarkupM e a
-      withF (Element el kids attrs events rest) = Element el kids (attrs <> attr) events rest
+      withF (Element ns el kids attrs events rest) = Element ns el kids (attrs <> attr) events rest
       withF el = el
 
 instance attributableMarkupF :: Attributable (Free (MarkupM e) Unit → Free (MarkupM e) Unit) where
@@ -120,8 +127,8 @@ instance eventableMarkup :: Eventable e (Free (MarkupM e) Unit) where
   withEvent f (EventHandlers es) = hoistFree withEventF f
     where
       withEventF :: ∀ a. MarkupM e a → MarkupM e a
-      withEventF (Element el kids attrs events rest) =
-        Element el kids attrs (events <> es) rest
+      withEventF (Element ns el kids attrs events rest) =
+        Element ns el kids attrs (events <> es) rest
       withEventF xs = xs
 
 instance eventableMarkupMF :: Eventable e (Free (MarkupM e) Unit → Free (MarkupM e) Unit) where

@@ -15,9 +15,10 @@ import Data.Foldable (elem, fold, foldr)
 import Data.Map (Map, lookup, fromFoldable)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String (fromCharArray, length, toCharArray)
+import Data.String (Pattern(Pattern), joinWith, length, split)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
-import Global (encodeURI)
+import Global.Unsafe (unsafeEncodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
 
 escapeMap :: Map Char String
@@ -48,7 +49,7 @@ isMIMEAttr tag attr
   | otherwise = false
 
 -- url attributes according to:
--- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes 
+-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
 isURLAttr :: String -> String -> Boolean
 isURLAttr tag attr
   | attr == "href" && tag == "a" = true
@@ -115,7 +116,7 @@ escape m = fromStream <<< extend escapeS <<< toStream
 
 escapeAttrValue :: String -> String -> String -> String
 escapeAttrValue tag key value
-  | isURLAttr tag key   = encodeURI value
+  | isURLAttr tag key   = unsafeEncodeURI value
   | isMIMEAttr tag key  = escape escapeMIMEMap value
   | otherwise           = escape escapeMap value
 
@@ -128,7 +129,7 @@ showAttrs tag = map showAttr >>> fold
           <> "\""
 
 renderItem :: ∀ e. MarkupM e ~> State String
-renderItem (Element name children attrs _ rest) =
+renderItem (Element _ name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs name attrs <>
           (if length c > 0 || name == "script"
