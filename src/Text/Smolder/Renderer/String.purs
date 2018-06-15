@@ -4,34 +4,39 @@ module Text.Smolder.Renderer.String
 
 import Prelude
 
+import Control.Comonad (extend)
+import Control.Comonad.Cofree (Cofree, head, mkCofree, tail, (:<))
 import Control.Monad.Free (foldFree)
-import Control.Monad.State (execState, State, state)
+import Control.Monad.State (State, evalState, execState, get, put, state)
+import Data.Array ((..))
 import Data.CatList (CatList)
-import Data.Foldable (fold)
-import Data.Maybe (fromMaybe)
-import Data.Map (Map, fromFoldable, lookup)
+import Data.Char (toCharCode)
+import Data.Foldable (elem, fold, foldr)
+import Data.Map (Map, lookup, fromFoldable)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String (fromCharArray, length, toCharArray)
 import Data.String (Pattern(Pattern), joinWith, length, split)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
 import Global.Unsafe (unsafeEncodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
 
-escapeMap :: Map String String
+escapeMap :: Map Char String
 escapeMap = fromFoldable
-  [ "&" /\ "&amp;"
-  , "<" /\ "&lt;"
-  , ">" /\ "&gt;"
-  , "\"" /\ "&quot;"
-  , "'" /\ "&#39;"
-  , "/" /\ "&#x2F;"
+  [ '&' /\ "&amp;"
+  , '<' /\ "&lt;"
+  , '>' /\ "&gt;"
+  , '"' /\ "&quot;"
+  , '\'' /\ "&#39;"
+  , '/' /\ "&#x2F;"
   ]
 
-escapeMIMEMap :: Map String String
+escapeMIMEMap :: Map Char String
 escapeMIMEMap = fromFoldable
-  [ "&" /\ "&amp;"
-  , "<" /\ "&lt;"
-  , "\"" /\ "&quot;"
-  , "'" /\ "&#39;"
+  [ '&' /\ "&amp;"
+  , '<' /\ "&lt;"
+  , '"' /\ "&quot;"
+  , '\'' /\ "&#39;"
   ]
 
 isMIMEAttr :: String -> String -> Boolean
@@ -67,11 +72,47 @@ isURLAttr tag attr
   | attr == "poster" && tag == "video" = true
   | otherwise = false
 
-escape :: Map String String -> String -> String
-escape m s = joinWith "" (escapeChar <$> (split (Pattern "") s))
+toStream :: String -> Cofree Maybe Char
+toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\0' Nothing) cs
   where
-    escapeChar :: String -> String
-    escapeChar c = fromMaybe c $ lookup c m
+  cs = toCharArray s
+
+fromStream :: Cofree Maybe String -> String
+fromStream cof =
+  case (head cof), (tail cof) of
+    _, Nothing -> ""
+    s, (Just cof') -> s <> fromStream cof'
+
+escape :: Map Char String -> String -> String
+escape m = fromStream <<< extend escapeS <<< toStream
+  where
+    startsEntity :: Maybe (Cofree Maybe Char) -> Boolean
+    startsEntity (Just w) =
+              case head w, tail w of
+                '#',  Just w' -> checkTail (48..57) w'
+                '#',  Nothing -> false
+                _,    _       -> checkTail (65..90 <> 97..122) w 
+    startsEntity Nothing = false
+
+    checkTail :: Array Int -> Cofree Maybe Char -> Boolean
+    checkTail allowed = flip evalState false <<< checkTail'
+      where
+        -- keep if `;` is allowed in `State` monad
+        checkTail' :: Cofree Maybe Char -> State Boolean Boolean
+        checkTail' w =
+          case toCharCode $ head w of
+            cc  | cc `elem` allowed -> do
+              put true
+              fromMaybe (pure false) $ checkTail' <$> tail w
+                | cc == 59 -> get
+                | otherwise -> pure false
+
+    escapeS :: Cofree Maybe Char -> String
+    escapeS w =
+      case head w of
+        '&' | startsEntity (tail w) -> "&"
+            | otherwise             -> "&amp;"
+        c                           -> fromMaybe (fromCharArray [c]) $ lookup c m
 
 escapeAttrValue :: String -> String -> String -> String
 escapeAttrValue tag key value
@@ -91,7 +132,7 @@ renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element _ name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs name attrs <>
-          (if length c > 0
+          (if length c > 0 || name == "script"
            then ">" <> c <> "</" <> name <> ">"
            else "/>")
   in state \s → Tuple rest $ append s b
