@@ -78,10 +78,13 @@ toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\0' Nothing) cs
   cs = toCharArray s
 
 fromStream :: Cofree Maybe String -> String
-fromStream cof =
-  case (head cof), (tail cof) of
-    _, Nothing -> ""
-    s, (Just cof') -> s <> fromStream cof'
+fromStream = go ""
+  where
+    go :: String -> Cofree Maybe String -> String
+    go result cof =
+      case (head cof), (tail cof) of
+        _, Nothing -> result
+        s, (Just cof') -> go (result <> s) cof'
 
 escape :: Map Char String -> String -> String
 escape m = fromStream <<< extend escapeS <<< toStream
@@ -91,7 +94,7 @@ escape m = fromStream <<< extend escapeS <<< toStream
               case head w, tail w of
                 '#',  Just w' -> checkTail (48..57) w'
                 '#',  Nothing -> false
-                _,    _       -> checkTail (65..90 <> 97..122) w 
+                _,    _       -> checkTail (65..90 <> 97..122) w
     startsEntity Nothing = false
 
     checkTail :: Array Int -> Cofree Maybe Char -> Boolean
