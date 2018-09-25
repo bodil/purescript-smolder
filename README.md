@@ -1,3 +1,7 @@
+## Low Maintenance Warning
+
+This library is in low maintenance mode, which means the author is currently only responding to pull requests and breaking compiler updates. If you want to take over maintainership of this library, please feel free to open an issue about it.
+
 # purescript-smolder
 
 A simple combinator library for generating HTML in PureScript, heavily inspired by Haskell's [BlazeHtml](http://jaspervdj.be/blaze/).
