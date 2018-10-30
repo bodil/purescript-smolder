@@ -8,18 +8,18 @@ import Control.Comonad (extend)
 import Control.Comonad.Cofree (Cofree, head, mkCofree, tail, (:<))
 import Control.Monad.Free (foldFree)
 import Control.Monad.State (State, evalState, execState, get, put, state)
-import Data.Array ((..))
+import Data.Array (notElem, (..))
 import Data.CatList (CatList)
 import Data.Char (toCharCode)
 import Data.Foldable (elem, fold, foldr)
 import Data.Map (Map, lookup, fromFoldable)
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.String (length)
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
 import Global.Unsafe (unsafeEncodeURI)
-import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..))
+import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..), NS(..))
 
 escapeMap :: Map Char String
 escapeMap = fromFoldable
@@ -131,11 +131,14 @@ showAttrs tag = map showAttr >>> fold
           <> escapeAttrValue tag key value
           <> "\""
 
+voidTags :: Array String 
+voidTags = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]
+
 renderItem :: ∀ e. MarkupM e ~> State String
-renderItem (Element _ name children attrs _ rest) =
+renderItem (Element ns name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs name attrs <>
-          (if length c > 0 || name == "script"
+          (if length c > 0 || (ns == HTMLns && notElem name voidTags)
            then ">" <> c <> "</" <> name <> ">"
            else "/>")
   in state \s → Tuple rest $ append s b
