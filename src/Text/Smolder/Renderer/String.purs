@@ -73,7 +73,7 @@ isURLAttr tag attr
   | otherwise = false
 
 toStream :: String -> Cofree Maybe Char
-toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\0' Nothing) cs
+toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\x0' Nothing) cs
   where
   cs = toCharArray s
 
@@ -105,8 +105,8 @@ escape m = fromStream <<< extend escapeS <<< toStream
         checkTail' w =
           case toCharCode $ head w of
             cc  | cc `elem` allowed -> do
-              put true
-              fromMaybe (pure false) $ checkTail' <$> tail w
+                    put true
+                    fromMaybe (pure false) $ checkTail' <$> tail w
                 | cc == 59 -> get
                 | otherwise -> pure false
 
