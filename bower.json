@@ -19,15 +19,15 @@
   ],
   "dependencies": {
     "purescript-bifunctors": "^4.0.0",
-    "purescript-catenable-lists": "^5.0.0",
-    "purescript-free": "^5.0.0",
+    "purescript-catenable-lists": "^5.0.1",
+    "purescript-free": "^5.2.0",
     "purescript-globals": "^4.0.0",
-    "purescript-ordered-collections": "^1.0.0",
-    "purescript-strings": "^4.0.0",
-    "purescript-transformers": "^4.1.0",
-    "purescript-tuples": "^5.0.0"
+    "purescript-ordered-collections": "^1.6.1",
+    "purescript-strings": "^4.0.1",
+    "purescript-transformers": "^4.2.0",
+    "purescript-tuples": "^5.1.0"
   },
   "devDependencies": {
-    "purescript-test-unit": "^14.0.0"
+    "purescript-test-unit": "^15.0.0"
   }
 }
