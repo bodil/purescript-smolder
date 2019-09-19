@@ -9,6 +9,7 @@ module Text.Smolder.Markup
   , leaf
   , text
   , empty
+  , doctype
   , Attribute()
   , class Attributable
   , with
@@ -43,10 +44,12 @@ instance functorEventHandler ∷ Functor EventHandler where
 -- | Representation of a markup node.
 -- |
 -- | This is either an `Element`, which maps to a DOM element,
--- | a `Content` node, which maps to a DOM text node, or `Empty`,
--- | which maps to an empty `NodeList`.
+-- | a `Content` node, which maps to a DOM text node, a `Doctype`
+-- | which maps to a DOCTYPE declaration, or `Empty`, which maps
+-- | to an empty `NodeList`.
 data MarkupM e a
   = Element NS String (Markup e) (CatList Attr) (CatList (EventHandler e)) a
+  | Doctype String a
   | Content String a
   | Empty a
 
@@ -56,6 +59,7 @@ type Markup e = Free (MarkupM e) Unit
 instance bifunctorMarkupM :: Bifunctor MarkupM where
   bimap l r (Empty a) = Empty (r a)
   bimap l r (Content t a) = Content t (r a)
+  bimap l r (Doctype t a) = Doctype t (r a)
   bimap l r (Element ns el kids attrs events a) =
     Element ns el (mapEvent l kids) attrs (map l <$> events) (r a)
 
@@ -78,6 +82,10 @@ text s = liftF $ Content s unit
 -- | Used for empty nodes (without text or children)
 empty :: ∀ e. Markup e
 empty = liftF $ Empty unit
+
+-- | Used for doctype
+doctype :: ∀ e. String → Markup e
+doctype s = liftF $ Doctype s unit
 
 data Attribute = Attribute (CatList Attr)
 
