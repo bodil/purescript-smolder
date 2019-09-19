@@ -14,6 +14,9 @@ import Data.Char (toCharCode)
 import Data.Foldable (elem, fold, foldr)
 import Data.Map (Map, lookup, fromFoldable)
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Set (Set)
+import Data.Set as Set
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.String (length)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
@@ -37,6 +40,26 @@ escapeMIMEMap = fromFoldable
   , '<' /\ "&lt;"
   , '"' /\ "&quot;"
   , '\'' /\ "&#39;"
+  ]
+
+voidElements :: Set String
+voidElements = Set.fromFoldable
+  [ "area"
+  , "base"
+  , "br"
+  , "col"
+  , "command"
+  , "embed"
+  , "hr"
+  , "img"
+  , "input"
+  , "keygen"
+  , "link"
+  , "meta"
+  , "param"
+  , "source"
+  , "track"
+  , "wbr"
   ]
 
 isMIMEAttr :: String -> String -> Boolean
@@ -73,7 +96,7 @@ isURLAttr tag attr
   | otherwise = false
 
 toStream :: String -> Cofree Maybe Char
-toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\0' Nothing) cs
+toStream s = foldr (\c t -> c :< (Just t)) (mkCofree '\x0' Nothing) cs
   where
   cs = toCharArray s
 
@@ -105,8 +128,8 @@ escape m = fromStream <<< extend escapeS <<< toStream
         checkTail' w =
           case toCharCode $ head w of
             cc  | cc `elem` allowed -> do
-              put true
-              fromMaybe (pure false) $ checkTail' <$> tail w
+                    put true
+                    fromMaybe (pure false) $ checkTail' <$> tail w
                 | cc == 59 -> get
                 | otherwise -> pure false
 
@@ -138,7 +161,7 @@ renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element ns name children attrs _ rest) =
   let c = render children
       b = "<" <> name <> showAttrs name attrs <>
-          (if length c > 0 || (ns == HTMLns && notElem name voidTags)
+          (if length c > 0 || (ns == HTMLns && not Set.member name voidElements)
            then ">" <> c <> "</" <> name <> ">"
            else "/>")
   in state \s → Tuple rest $ append s b

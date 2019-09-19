@@ -31,6 +31,8 @@ import Data.CatList (CatList)
 
 data NS = HTMLns | SVGns
 
+derive instance eqNS :: Eq NS
+
 data Attr = Attr String String
 
 data EventHandler e = EventHandler String e
