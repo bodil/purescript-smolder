@@ -4,3 +4,5 @@
 /.tern-port
 *.tix
 /.psc-package
+/.pulp-cache
+.psc-ide-port
