@@ -37,8 +37,6 @@ data Attr = Attr String String
 
 data EventHandler e = EventHandler String e
 
-derive instance eqNS :: Eq NS
-
 instance functorEventHandler ∷ Functor EventHandler where
   map f (EventHandler s e) = EventHandler s (f e)
 
