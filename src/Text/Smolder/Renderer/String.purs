@@ -8,7 +8,7 @@ import Control.Comonad (extend)
 import Control.Comonad.Cofree (Cofree, head, mkCofree, tail, (:<))
 import Control.Monad.Free (foldFree)
 import Control.Monad.State (State, evalState, execState, get, put, state)
-import Data.Array ((..))
+import Data.Array (notElem, (..))
 import Data.CatList (CatList)
 import Data.Char (toCharCode)
 import Data.Foldable (elem, fold, foldr)
@@ -18,6 +18,7 @@ import Data.Set (Set)
 import Data.Set as Set
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.String (length)
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
 import Global.Unsafe (unsafeEncodeURI)
@@ -152,6 +153,9 @@ showAttrs tag = map showAttr >>> fold
           <> "=\""
           <> escapeAttrValue tag key value
           <> "\""
+
+voidTags :: Array String 
+voidTags = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]
 
 renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element ns name children attrs _ rest) =
