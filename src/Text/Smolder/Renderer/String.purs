@@ -153,9 +153,6 @@ showAttrs tag = map showAttr >>> fold
           <> escapeAttrValue tag key value
           <> "\""
 
-voidTags :: Array String
-voidTags = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]
-
 renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element ns name children attrs _ rest) =
   let c = render children
