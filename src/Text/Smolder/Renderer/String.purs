@@ -16,8 +16,8 @@ import Data.Map (Map, lookup, fromFoldable)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Set (Set)
 import Data.Set as Set
-import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.String (length)
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
 import Global.Unsafe (unsafeEncodeURI)
@@ -147,11 +147,13 @@ escapeAttrValue tag key value
 
 showAttrs :: String -> CatList Attr → String
 showAttrs tag = map showAttr >>> fold
-  where showAttr (Attr key value) = " "
-          <> key
-          <> "=\""
-          <> escapeAttrValue tag key value
-          <> "\""
+  where
+    showAttr (SafeAttr key value) = " " <> key <> "=\"" <> value <> "\""
+    showAttr (Attr key value) = " "
+      <> key
+      <> "=\""
+      <> escapeAttrValue tag key value
+      <> "\""
 
 renderItem :: ∀ e. MarkupM e ~> State String
 renderItem (Element ns name children attrs _ rest) =

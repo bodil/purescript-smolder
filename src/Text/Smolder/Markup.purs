@@ -14,6 +14,7 @@ module Text.Smolder.Markup
   , class Attributable
   , with
   , attribute
+  , safe
   , (!)
   , optionalWith
   , (!?)
@@ -34,7 +35,9 @@ data NS = HTMLns | SVGns
 
 derive instance eqNS :: Eq NS
 
-data Attr = Attr String String
+data Attr
+  = Attr String String
+  | SafeAttr String String
 
 data EventHandler e = EventHandler String e
 
@@ -98,6 +101,13 @@ instance monoidAttribute :: Monoid Attribute where
 -- | Create an attribute.
 attribute :: String → String → Attribute
 attribute key value = Attribute (pure $ Attr key value)
+
+safe :: Attribute → Attribute
+safe (Attribute attrs) = Attribute $ map safeAttr attrs
+  where
+    safeAttr :: Attr → Attr
+    safeAttr attr@(SafeAttr _ _) = attr
+    safeAttr (Attr key val) = SafeAttr key val
 
 class Attributable a where
   -- | Add an attribute to a markup node.
