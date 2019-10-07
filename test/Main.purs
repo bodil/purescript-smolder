@@ -8,9 +8,9 @@ import Test.SVG as SvgTest
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Main (runTest)
-import Text.Smolder.HTML (body, div, h1, head, html, img, link, meta, p, script, style, title)
-import Text.Smolder.HTML.Attributes (charset, content, href, httpEquiv, lang, name, rel, src, type')
-import Text.Smolder.Markup (Markup, doctype, empty, on, text, (!), (#!))
+import Text.Smolder.HTML (body, div, form, h1, head, html, img, link, meta, p, script, style, title)
+import Text.Smolder.HTML.Attributes (action, charset, content, href, httpEquiv, lang, name, rel, src, type')
+import Text.Smolder.Markup (Markup, doctype, empty, on, safe, text, (!), (#!))
 import Text.Smolder.Renderer.String (render)
 
 doc :: forall a. Markup (a -> Effect Unit)
@@ -50,6 +50,8 @@ main = runTest do
       equal "<div>&amp;gt.</div>" $ render $ div $ text "&gt."
       equal "<div>&amp;#.</div>" $ render $ div $ text "&#."
       equal "<div>&amp;#;</div>" $ render $ div $ text "&#;"
+    test "doesn't escape safe attributes" do
+      equal "<form action=\"/foo/bar\"></form>" $ render $ form ! (safe $ action "/foo/bar") $ empty
     test "quirks" do
       -- this renders invalid HTML
       equal "<div>&#1;</div>" $ render $ div $ text "&#1;"
