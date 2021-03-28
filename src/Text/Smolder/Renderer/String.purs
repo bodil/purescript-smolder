@@ -20,7 +20,7 @@ import Data.String (length)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
-import Global.Unsafe (unsafeEncodeURI)
+import JSURI (encodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..), NS(..))
 
 escapeMap :: Map Char String
@@ -141,7 +141,7 @@ escape m = fromStream <<< extend escapeS <<< toStream
 
 escapeAttrValue :: String -> String -> String -> String
 escapeAttrValue tag key value
-  | isURLAttr tag key   = unsafeEncodeURI value
+  | isURLAttr tag key   = fromMaybe value $ encodeURI value
   | isMIMEAttr tag key  = escape escapeMIMEMap value
   | otherwise           = escape escapeMap value
 
