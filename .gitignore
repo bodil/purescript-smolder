@@ -5,4 +5,8 @@
 *.tix
 /.psc-package
 /.pulp-cache
-.psc-ide-port
+/generated-docs/
+/.psc*
+/.purs*
+/.psa*
+/.spago

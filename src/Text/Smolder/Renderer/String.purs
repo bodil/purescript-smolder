@@ -20,7 +20,7 @@ import Data.String (length)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..))
 import Data.Tuple.Nested ((/\))
-import Global.Unsafe (unsafeEncodeURI)
+import Text.Smolder.URI (unsafeEncodeURI)
 import Text.Smolder.Markup (Attr(..), Markup, MarkupM(..), NS(..))
 
 escapeMap :: Map Char String
